@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Processing - DocuDecipher{% endblock %}
+
+{% block content %}
+<style>
+    .loading-container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 4rem 1rem;
+        text-align: center;
+    }
+    
+    .loading-icon {
+        font-size: 4rem;
+        color: #fbbf24;
+        margin-bottom: 2rem;
+    }
+    
+    h1 {
+        color: white;
+        margin-bottom: 1rem;
+    }
+    
+    p {
+        color: #94a3b8;
+        margin-bottom: 2rem;
+    }
+    
+    .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: #1e293b;
+        border-radius: 4px;
+        overflow: hidden;
+        margin: 2rem 0;
+    }
+    
+    .progress-fill {
+        height: 100%;
+        background: #0cc0df;
+        width: 0%;
+        transition: width 0.3s ease;
+    }
+    
+    .status-message {
+        color: #0cc0df;
+        font-size: 1rem;
+        margin-top: 1rem;
+    }
+</style>
+
+<div class="loading-container">
+    <div class="loading-icon">
+        <i class="fas fa-lightbulb"></i>
+    </div>
+    
+    <h1>Analyzing your code</h1>
+    <p>This will take 30-60 seconds</p>
+    
+    <!-- REPLACE the progress bar with this spinner -->
+    <div class="spinner"></div>
+    
+    <div class="status-message">
+        Processing... Please wait.
+    </div>
+</div>
+
+<style>
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+    
+    .spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(12, 192, 223, 0.3);
+        border-top-color: #0cc0df;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 2rem auto;
+    }
+</style>
+
+<meta http-equiv="refresh" content="5;url=/result/{{ analysis_id }}">
+{% endblock %}

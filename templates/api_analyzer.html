@@ -1,0 +1,311 @@
+{% extends "base.html" %}
+
+{% block title %}Analyze API Documentation - DocuDecipher{% endblock %}
+
+{% block content %}
+<style>
+    .analyzer-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+    
+    .analyzer-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .analyzer-header i {
+        font-size: 4rem;
+        color: #fbbf24;
+        margin-bottom: 1rem;
+    }
+    
+    .analyzer-header h1 {
+        color: white;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .analyzer-header p {
+        color: #94a3b8;
+        font-size: 1.1rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+        display: block;
+        color: white;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        background: #1e293b;
+        border: 2px solid #334155;
+        border-radius: 8px;
+        color: white;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        border-color: #0cc0df;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(12, 192, 223, 0.1);
+    }
+    
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+        color: #64748b;
+    }
+    
+    .level-selector {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin: 1.5rem 0;
+    }
+    
+    .level-card {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 8px;
+        padding: 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .level-card:hover {
+        border-color: #0cc0df;
+        transform: translateY(-2px);
+    }
+    
+    .level-card.selected {
+        border-color: #0cc0df;
+        background: rgba(12, 192, 223, 0.1);
+    }
+    
+    .level-card i {
+        font-size: 1.5rem;
+        color: #0cc0df;
+        margin-bottom: 0.5rem;
+    }
+    
+    .level-card h4 {
+        color: white;
+        margin: 0.25rem 0;
+        font-size: 1rem;
+    }
+    
+    .level-card p {
+        color: #94a3b8;
+        margin: 0;
+        font-size: 0.75rem;
+    }
+    
+    .btn-primary {
+        width: 100%;
+        background: #0cc0df;
+        color: white;
+        border: none;
+        padding: 1rem;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-primary:hover {
+        background: #0aa8c4;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(12, 192, 223, 0.2);
+    }
+    
+    .btn-primary i {
+        margin-right: 0.5rem;
+    }
+    
+    .help-text {
+        color: #64748b;
+        font-size: 0.85rem;
+        margin-top: 0.5rem;
+    }
+    
+    @media (max-width: 768px) {
+        .level-selector {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+</style>
+
+<div class="analyzer-container">
+    <div class="analyzer-header">
+        <i class="fas fa-code-branch"></i>
+        <h1>Analyze API Documentation</h1>
+        <p>Understand REST, GraphQL, and OpenAPI specifications</p>
+    </div>
+    
+    <div class="card">
+        <form action="/process-api" method="POST">
+            <!-- URL Input -->
+            <div class="form-group">
+                <label for="api_url">
+                    <i class="fas fa-link" style="color: #0cc0df;"></i> API Documentation URL *
+                </label>
+                <input 
+                    type="url" 
+                    id="api_url" 
+                    name="api_url" 
+                    placeholder="https://example.com/api/docs or https://github.com/org/repo"
+                    required
+                >
+                <p class="help-text">
+                    Supports OpenAPI/Swagger JSON, ReadTheDocs, GitHub repos, or any API documentation site
+                </p>
+            </div>
+            
+            <!-- API Type Dropdown -->
+            <div class="form-group">
+                <label for="api_type">
+                    <i class="fas fa-tag" style="color: #0cc0df;"></i> API Type
+                </label>
+                <select id="api_type" name="api_type">
+                    <option value="auto">Auto-detect</option>
+                    <option value="rest">REST API</option>
+                    <option value="graphql">GraphQL</option>
+                    <option value="openapi">OpenAPI/Swagger</option>
+                    <option value="soap">SOAP</option>
+                    <option value="grpc">gRPC</option>
+                </select>
+            </div>
+            
+            <!-- Knowledge Level -->
+            <div class="form-group">
+                <label><i class="fas fa-brain" style="color: #0cc0df;"></i> Your knowledge level</label>
+                <div class="level-selector" id="levelSelector">
+                    <div class="level-card" data-level="novice" onclick="selectLevel('novice')">
+                        <i class="fas fa-seedling"></i>
+                        <h4>Novice</h4>
+                        <p>New to APIs</p>
+                    </div>
+                    <div class="level-card" data-level="general" onclick="selectLevel('general')">
+                        <i class="fas fa-user"></i>
+                        <h4>General</h4>
+                        <p>Basic understanding</p>
+                    </div>
+                    <div class="level-card" data-level="educated" onclick="selectLevel('educated')">
+                        <i class="fas fa-user-graduate"></i>
+                        <h4>Educated</h4>
+                        <p>Some API experience</p>
+                    </div>
+                    <div class="level-card selected" data-level="professional" onclick="selectLevel('professional')">
+                        <i class="fas fa-briefcase"></i>
+                        <h4>Professional</h4>
+                        <p>Experienced developer</p>
+                    </div>
+                </div>
+                <input type="hidden" id="level" name="level" value="professional">
+            </div>
+            
+            <!-- Specific Questions -->
+            <div class="form-group">
+                <label for="specific_questions">
+                    <i class="fas fa-question-circle" style="color: #0cc0df;"></i> Specific questions (optional)
+                </label>
+                <textarea 
+                    id="specific_questions" 
+                    name="specific_questions" 
+                    rows="4"
+                    placeholder="• What endpoints are available?
+• How do I authenticate?
+• What are the rate limits?
+• Example request/response?"
+                ></textarea>
+            </div>
+            
+            <!-- Hidden field for doc_type -->
+            <input type="hidden" name="doc_type" value="api">
+            
+            <!-- Submit Button -->
+            <button type="submit" class="btn-primary">
+                <i class="fas fa-search"></i> Analyze API Documentation
+            </button>
+        </form>
+    </div>
+    
+    <div class="card" style="margin-top: 1.5rem;">
+        <h4 style="color: white; margin-top: 0;">Examples</h4>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1rem;">
+            <div onclick="setExample('https://petstore.swagger.io/v2/swagger.json')" style="cursor: pointer; padding: 0.75rem; background: #1e293b; border-radius: 6px;">
+                <p style="color: #0cc0df; margin: 0;">Petstore API</p>
+                <p style="color: #94a3b8; font-size: 0.85rem; margin: 0;">OpenAPI example</p>
+            </div>
+            <div onclick="setExample('https://docs.github.com/en/rest')" style="cursor: pointer; padding: 0.75rem; background: #1e293b; border-radius: 6px;">
+                <p style="color: #0cc0df; margin: 0;">GitHub REST API</p>
+                <p style="color: #94a3b8; font-size: 0.85rem; margin: 0;">Documentation</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function selectLevel(level) {
+        document.getElementById('level').value = level;
+        
+        // Card selection for level
+document.querySelectorAll('.level-card').forEach(card => {
+    card.addEventListener('click', function(event) {
+        // Get the card that was clicked
+        const clickedCard = event.currentTarget;
+        const level = clickedCard.dataset.level;
+        
+        if (!level) {
+            console.log('No level data found on card');
+            return;
+        }
+        
+        // Update hidden input
+        const levelInput = document.getElementById('level');
+        if (levelInput) {
+            levelInput.value = level;
+        }
+        
+        // Update UI - remove selected from all
+        document.querySelectorAll('.level-card').forEach(c => {
+            c.classList.remove('selected');
+        });
+        
+        // Add selected to clicked card
+        clickedCard.classList.add('selected');
+        
+        console.log('Selected level:', level);
+    });
+});
+
+// Set default on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const defaultLevel = document.getElementById('level')?.value || 'professional';
+    const defaultCard = document.querySelector(`.level-card[data-level="${defaultLevel}"]`);
+    if (defaultCard) {
+        defaultCard.classList.add('selected');
+    }
+});
+    
+    function setExample(url) {
+        document.getElementById('api_url').value = url;
+        document.getElementById('api_url').scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+{% endblock %}

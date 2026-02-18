@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Security - CodeDecipher{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 2rem auto; padding: 2rem; background: #1e293b; border-radius: 12px; border: 1px solid #334155;">
+    <h1 style="color: white; margin-bottom: 2rem;">Security</h1>
+    
+    <div style="color: #94a3b8; line-height: 1.6;">
+        <h2 style="color: white; margin: 1.5rem 0 1rem;">Data Protection</h2>
+        <ul style="margin-left: 1.5rem;">
+            <li>All code auto-deleted within 1 hour</li>
+            <li>HTTPS encryption in transit</li>
+            <li>No permanent storage of your code</li>
+        </ul>
+        
+        <h2 style="color: white; margin: 1.5rem 0 1rem;">Authentication</h2>
+        <p>We use magic links — no passwords stored. Session cookies are HTTP-only and secure.</p>
+        
+        <h2 style="color: white; margin: 1.5rem 0 1rem;">Vulnerability Reporting</h2>
+        <p>Found a security issue? Email contact@codedecipher.app. We practice responsible disclosure.</p>
+        
+        <h2 style="color: white; margin: 1.5rem 0 1rem;">Third-Party AI</h2>
+        <p>Code is sent to DeepSeek for analysis. They do not store your code. See their security policy for details.</p>
+    </div>
+</div>
+{% endblock %}

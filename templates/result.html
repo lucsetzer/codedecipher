@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+{% block title %}Analysis Results - DocuDecipher{% endblock %}
+
+{% block content %}
+<style>
+    .result-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+    
+    .result-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .result-header i {
+        font-size: 3rem;
+        color: #fbbf24;
+        margin-bottom: 1rem;
+    }
+    
+    .result-header h1 {
+        color: white;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .result-header p {
+        color: #94a3b8;
+    }
+    
+    .result-card {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .result-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #334155;
+    }
+    
+    .result-meta .badge {
+        background: rgba(12, 192, 223, 0.1);
+        color: #0cc0df;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.85rem;
+    }
+    
+    .result-content {
+        line-height: 1.6;
+        color: #e2e8f0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        white-space: pre-wrap;
+    }
+    
+    .result-content h1 { color: white; font-size: 1.8rem; margin: 1.5rem 0 1rem; }
+    .result-content h2 { color: white; font-size: 1.5rem; margin: 1.5rem 0 1rem; }
+    .result-content h3 { color: white; font-size: 1.25rem; margin: 1.5rem 0 1rem; }
+    .result-content ul, .result-content ol { margin: 1rem 0; padding-left: 1.5rem; }
+    .result-content li { color: #94a3b8; margin-bottom: 0.25rem; }
+    .result-content code { background: #0f172a; padding: 0.2rem 0.4rem; border-radius: 4px; color: #0cc0df; }
+    .result-content pre { background: #0f172a; padding: 1rem; border-radius: 8px; overflow-x: auto; border: 1px solid #334155; }
+    .result-content pre code { background: none; padding: 0; color: #e2e8f0; }
+
+    /* Code blocks */
+    .result-content pre {
+        background: #0f172a;
+        padding: 1rem;
+        border-radius: 8px;
+        overflow-x: auto;
+        border: 1px solid #334155;
+        margin: 1rem 0;
+    }
+    
+    .result-content code {
+        font-family: 'SF Mono', Monaco, Consolas, monospace;
+        font-size: 0.9rem;
+        color: #e2e8f0;
+    }
+    
+    /* Inline code */
+    .result-content :not(pre) > code {
+        background: #0f172a;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        color: #0cc0df;
+    }
+    
+    /* Headers */
+    .result-content h1 { color: white; font-size: 1.8rem; margin: 1.5rem 0 1rem; }
+    .result-content h2 { color: white; font-size: 1.5rem; margin: 1.5rem 0 1rem; }
+    .result-content h3 { color: white; font-size: 1.25rem; margin: 1.5rem 0 1rem; }
+    
+    /* Lists */
+    .result-content ul, .result-content ol {
+        margin: 1rem 0;
+        padding-left: 1.5rem;
+    }
+    
+    .result-content li {
+        color: #94a3b8;
+        margin-bottom: 0.25rem;
+    }
+    
+    /* Bold text */
+    .result-content strong {
+        color: white;
+    }
+    
+    /* Blockquotes */
+    .result-content blockquote {
+        border-left: 4px solid #0cc0df;
+        margin: 1rem 0;
+        padding: 0.5rem 1rem;
+        background: rgba(12, 192, 223, 0.05);
+        color: #94a3b8;
+    }
+    
+    /* Tables */
+    .result-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+    }
+    
+    .result-content th {
+        background: #1e293b;
+        color: white;
+        padding: 0.5rem;
+        text-align: left;
+        border: 1px solid #334155;
+    }
+    
+    .result-content td {
+        padding: 0.5rem;
+        border: 1px solid #334155;
+        color: #94a3b8;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+    
+    .btn-secondary {
+        background: #64748b;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+    
+    .btn-secondary:hover {
+        background: #4b5565;
+    }
+</style>
+
+<div class="result-container">
+    <div class="result-header">
+        <i class="fas fa-lightbulb"></i>
+        <h1>Analysis Complete</h1>
+        <p>Your results are ready</p>
+    </div>
+    
+    <div class="result-card">
+        <div class="result-meta">
+            <span class="badge">{{ analysis_type }}</span>
+            <span style="color: #64748b;">{{ analysis_date }}</span>
+        </div>
+
+        <div style="position: relative; background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 2rem;">
+            <button onclick="copyResult()" style="position: absolute; top: 0; right: 0; background: #0cc0df; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; z-index: 10;">
+                Copy
+        </button>
+        </div>
+
+        <div class="result-content">
+            {{ result_text | safe }}
+        </div>
+    </div>
+    
+    <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+        <a href="/analyze/{{ feature }}" class="btn-secondary">
+            <i class="fas fa-plus"></i> New {{ feature }} Analysis
+        </a>
+    </div>
+</div>
+
+<script>
+function copyResult(button) {
+    const element = document.querySelector('.result-content');
+    const text = element.innerText;
+    
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    
+    try {
+        document.execCommand('copy');
+        
+        // Show success (even if execCommand returns false)
+        const originalText = button.innerHTML;
+        button.innerHTML = '✅ Copied!';
+        setTimeout(() => {
+            button.innerHTML = originalText;
+        }, 2000);
+        
+    } catch (err) {
+        // Fallback - highlight text
+        const range = document.createRange();
+        range.selectNodeContents(element);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        
+        button.innerHTML = '📋 Press Ctrl+C';
+        setTimeout(() => {
+            button.innerHTML = '📋 Copy';
+        }, 3000);
+    }
+    
+    document.body.removeChild(textarea);
+}
+</script>
+
+{% endblock %}

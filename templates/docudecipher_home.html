@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}DocuDecipher - Code Analysis Tools{% endblock %}
+
+{% block content %}
+<div style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+    <!-- Hero Section -->
+    <div style="text-align: center; margin-bottom: 4rem;">
+        <i class="fas fa-lightbulb" style="font-size: 4rem; color: #fbbf24; margin-bottom: 1rem;"></i>
+        <h1 style="color: white; font-size: 3rem; margin-bottom: 1rem;">DocuDecipher</h1>
+        <p style="color: #94a3b8; font-size: 1.2rem; max-width: 600px; margin: 0 auto;">
+            Turn complex code into clear understanding. Choose a tool below to get started.
+        </p>
+    </div>
+    
+    <!-- Feature Cards -->
+    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 3rem;">
+        <!-- Snippet Analyzer -->
+        <a href="/analyze/snippet" style="text-decoration: none;">
+            <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 2rem; transition: all 0.2s ease; height: 100%;" 
+                 onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='#0cc0df';" 
+                 onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#334155';">
+                <i class="fas fa-code" style="font-size: 2.5rem; color: #0cc0df; margin-bottom: 1rem;"></i>
+                <h3 style="color: white; margin-bottom: 0.5rem;">Snippet Analyzer</h3>
+                <p style="color: #94a3b8; margin: 0;">Understand any code snippet in plain English</p>
+            </div>
+        </a>
+        
+        <!-- GitHub Analyzer -->
+        <a href="/analyze/github" style="text-decoration: none;">
+            <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 2rem; transition: all 0.2s ease; height: 100%;"
+                 onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='#0cc0df';"
+                 onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#334155';">
+                <i class="fab fa-github" style="font-size: 2.5rem; color: #0cc0df; margin-bottom: 1rem;"></i>
+                <h3 style="color: white; margin-bottom: 0.5rem;">GitHub Analyzer</h3>
+                <p style="color: #94a3b8; margin: 0;">Analyze entire repositories in minutes</p>
+            </div>
+        </a>
+        
+        <!-- Security Scanner -->
+        <a href="/analyze/security" style="text-decoration: none;">
+            <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 2rem; transition: all 0.2s ease; height: 100%;"
+                 onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='#0cc0df';"
+                 onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#334155';">
+                <i class="fas fa-shield-alt" style="font-size: 2.5rem; color: #0cc0df; margin-bottom: 1rem;"></i>
+                <h3 style="color: white; margin-bottom: 0.5rem;">Security Scanner</h3>
+                <p style="color: #94a3b8; margin: 0;">Find vulnerabilities and hardcoded secrets</p>
+            </div>
+        </a>
+        
+        <!-- API Analyzer -->
+        <a href="/analyze/api" style="text-decoration: none;">
+            <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 2rem; transition: all 0.2s ease; height: 100%;"
+                 onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='#0cc0df';"
+                 onmouseout="this.style.transform='translateY(0)'; this.style.borderColor='#334155';">
+                <i class="fas fa-cloud" style="font-size: 2.5rem; color: #0cc0df; margin-bottom: 1rem;"></i>
+                <h3 style="color: white; margin-bottom: 0.5rem;">API Analyzer</h3>
+                <p style="color: #94a3b8; margin: 0;">Break down API documentation</p>
+            </div>
+        </a>
+    </div>
+    
+    <!-- Quick Stats / Token Info -->
+    <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 1.5rem; text-align: center;">
+        <p style="color: #94a3b8;">
+            <i class="fas fa-coins" style="color: #fbbf24;"></i> 
+            You have <strong style="color: white;">{{ tokens }}</strong> tokens remaining this month
+        </p>
+        <a href="/dashboard" style="color: #0cc0df; text-decoration: none;">View Dashboard →</a>
+    </div>
+</div>
+{% endblock %}
