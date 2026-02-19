@@ -30,7 +30,7 @@ def send_magic_link_email(email: str):
         print(f"📨 [email_service] Token created: {token[:30]}...")
         
         # Get your Render URL for the magic link
-        public_url = os.getenv("PUBLIC_URL", "https://docudecipher.com")
+        public_url = os.getenv("PUBLIC_URL", "https://codedecipher.app")
         magic_link = f"{public_url}/auth?token={token}"
         print(f"📨 [email_service] Magic link: {magic_link}")
         
@@ -52,4 +52,4 @@ def send_magic_link_email(email: str):
         import traceback
         traceback.print_exc()
         # Return a fallback
-        return f"https://docudecipher.com/auth?token=error_{email}"
+        return f"https://codedecipher.app/auth?token=error_{email}"

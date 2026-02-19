@@ -22,7 +22,7 @@ import secrets
 load_dotenv()
 
 # Create FastAPI app
-app = FastAPI(title="DocuDecipher")
+app = FastAPI(title="CodeDecipher")
 
 # Routers
 app.include_router(results_router)
