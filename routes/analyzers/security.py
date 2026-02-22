@@ -161,6 +161,16 @@ async def process_security_upload(
 ):
     """Process security scan from uploaded file"""
     
+    # Check login
+    user_email = request.session.get("user_email")
+    if not user_email:
+        return RedirectResponse("/login", status_code=303)
+    
+    # Check tokens
+    from shared.auth import get_user_tokens, deduct_token
+    if get_user_tokens(user_email) <= 0:
+        return RedirectResponse("/insufficient-tokens", status_code=303)
+    
     analysis_id = str(uuid.uuid4())
     
     # Read file content
@@ -171,16 +181,14 @@ async def process_security_upload(
         code = "[Binary file content could not be decoded]"
     
     prompt = f"""Perform a security review of this code for a {level} audience.
-
 Filename: {file.filename}
 Scan type: {scan_type}
 Minimum severity: {severity}
-
 CODE TO ANALYZE:
 {code}
-
 Please provide security analysis focusing on vulnerabilities, secrets, and issues."""
     
+    # Store initial data WITH user_email
     data = {
         "feature": "security",
         "filename": file.filename,
@@ -188,29 +196,14 @@ Please provide security analysis focusing on vulnerabilities, secrets, and issue
         "scan_type": scan_type,
         "severity": severity,
         "level": level,
+        "user_email": user_email,  # ← CRITICAL
         "status": "processing",
         "progress": 0.1,
         "message": "Scanning uploaded file...",
         "created_at": asyncio.get_event_loop().time()
     }
     
-    from shared.auth import get_user_tokens, deduct_token
-
-    # Get user email from session (assuming you have this)
-    user_email = request.session.get("user_email")
-    if not user_email:
-        return RedirectResponse(url="/login", status_code=303)
-
-    # Check tokens
-    if get_user_tokens(user_email) <= 0:
-        return RedirectResponse(url="/insufficient-tokens", status_code=303)
-
-    # ... rest of analysis code ...
-
-    # After successful completion, deduct token
-    if data["status"] == "complete":
-        deduct_token(user_email)
-
+    # Save and start background task
     from shared.file_queue import save_analysis
     save_analysis(analysis_id, data)
     
@@ -218,27 +211,5 @@ Please provide security analysis focusing on vulnerabilities, secrets, and issue
     asyncio.create_task(run_analysis(analysis_id, data, prompt))
     
     return RedirectResponse(url=f"/security-loading/{analysis_id}", status_code=303)
-
-@router.post("/process-security-upload")
-async def process_security_upload(
-    request: Request,
-    file: UploadFile = File(...),
-    # ... other fields
-):
-    # Create temp file with expiration
-    temp_dir = tempfile.mkdtemp()
-    temp_path = os.path.join(temp_dir, file.filename)
-    
-    # Save file
-    content = await file.read()
-    with open(temp_path, 'wb') as f:
-        f.write(content)
-    
-    # Schedule deletion in 1 hour
-    async def delete_later():
-        await asyncio.sleep(3600)  # 1 hour
-        if os.path.exists(temp_dir):
-            shutil.rmtree(temp_dir)
-            print(f"🗑️ Deleted temp file: {temp_path}")
     
     asyncio.create_task(delete_later())
