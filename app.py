@@ -86,3 +86,12 @@ async def debug_routes():
             routes_list.append(f"{route.path} [MOUNT]")
     return {"routes": routes_list}
 
+@app.get("/debug-env")
+async def debug_env():
+    import os
+    return {
+        "deepseek_exists": bool(os.getenv("DEEPSEEK_API_KEY")),
+        "deepseek_prefix": os.getenv("DEEPSEEK_API_KEY", "")[:5] if os.getenv("DEEPSEEK_API_KEY") else None,
+        "resend_exists": bool(os.getenv("RESEND_API_KEY")),
+        "session_exists": bool(os.getenv("SESSION_SECRET")),
+    }
