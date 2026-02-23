@@ -2,12 +2,51 @@
 
 import os
 import json
+import resend
 import sqlite3
 
 from datetime import datetime
+from dotenv import load_dotenv
+
+env_path = '/root/codedecipher/.env'
+load_dotenv()
 
 DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'bank.db')
 print(f"📂 Using database at: {DB_PATH}")
+
+# Debug prints
+print(f"📂 Loading .env from: {env_path}")
+print(f"🔑 RESEND_API_KEY exists: {bool(os.getenv('RESEND_API_KEY'))}")
+if os.getenv('RESEND_API_KEY'):
+    print(f"🔑 Key starts with: {os.getenv('RESEND_API_KEY')[:10]}...")
+
+resend.api_key = os.getenv("RESEND_API_KEY")
+
+def send_magic_link(email: str, token: str):
+    print(f"🔑 Resend key in auth.py: {os.getenv('RESEND_API_KEY', 'NOT FOUND')[:10]}...")
+    """Send magic link email via Resend"""
+    magic_link = f"https://codedecipher.app/auth?token={token}"
+    
+    try:
+        params = {
+            "from": "noreply@codedecipher.app",
+            "to": [email],
+            "subject": "Your CodeDecipher Login Link",
+            "html": f"""
+                <h2>Login to CodeDecipher</h2>
+                <p>Click the link below to log in:</p>
+                <p><a href="{magic_link}">{magic_link}</a></p>
+                <p>This link expires in 24 hours.</p>
+                <p>If you didn't request this, ignore this email.</p>
+            """
+        }
+        
+        result = resend.Emails.send(params)
+        print(f"✅ Magic link email sent to {email}")
+        return True
+    except Exception as e:
+        print(f"❌ Failed to send email: {e}")
+        return False
 
 def store_magic_token(email: str, token: str) -> bool:
     print(f"💾 STORING TOKEN: {token} for {email}")
@@ -85,12 +124,35 @@ def get_user_tokens(email: str) -> int:
 
 def deduct_token(email: str) -> bool:
     """Deduct one token from user's balance"""
-    user_data = get_user_data(email)
-    if user_data.get("tokens", 0) > 0:
-        user_data["tokens"] = user_data["tokens"] - 1
-        save_user_data(email, user_data)
-        return True
-    return False
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        
+        # Ensure user exists
+        cursor.execute(
+            "INSERT OR IGNORE INTO users (email, tokens, last_token_reset) VALUES (?, 5, datetime('now'))",
+            (email,)
+        )
+        
+        # Deduct token
+        cursor.execute(
+            "UPDATE users SET tokens = tokens - 1 WHERE email = ? AND tokens > 0",
+            (email,)
+        )
+        
+        conn.commit()
+        success = cursor.rowcount > 0
+        conn.close()
+        
+        if success:
+            print(f"✅ Deducted token for {email}")
+        else:
+            print(f"⚠️ No tokens to deduct for {email}")
+        
+        return success
+    except Exception as e:
+        print(f"❌ deduct_token error: {e}")
+        return False
 
 def reset_monthly_tokens(email: str):
     """Reset user's tokens to monthly allowance"""

@@ -1,0 +1,50 @@
+Feb 19 15:19:35 ubuntu-2gb-ash-2 systemd[1]: codedecipher.service: Scheduled restart job, restart counter is at 4.
+Feb 19 15:19:35 ubuntu-2gb-ash-2 systemd[1]: Stopped CodeDecipher.
+Feb 19 15:19:35 ubuntu-2gb-ash-2 systemd[1]: Started CodeDecipher.
+Feb 19 15:19:35 ubuntu-2gb-ash-2 systemd[18954]: codedecipher.service: Failed to locate executable /root/codedecipher/venv/bin/uvicorn: No such file or directory
+Feb 19 15:19:35 ubuntu-2gb-ash-2 systemd[18954]: [0;1;31m[0;1;39m[0;1;31mcodedecipher.service: Failed at step EXEC spawning /root/codedecipher/venv/bin/uvicorn: No such file or directory[0m
+Feb 19 15:19:35 ubuntu-2gb-ash-2 systemd[1]: [0;1;39m[0;1;31m[0;1;39mcodedecipher.service: Main process exited, code=exited, status=203/EXEC[0m
+Feb 19 15:19:35 ubuntu-2gb-ash-2 systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mcodedecipher.service: Failed with result 'exit-code'.[0m
+Feb 19 15:19:35 ubuntu-2gb-ash-2 systemd[1]: codedecipher.service: Scheduled restart job, restart counter is at 5.
+Feb 19 15:19:35 ubuntu-2gb-ash-2 systemd[1]: Stopped CodeDecipher.
+Feb 19 15:19:35 ubuntu-2gb-ash-2 systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mcodedecipher.service: Start request repeated too quickly.[0m
+Feb 19 15:19:35 ubuntu-2gb-ash-2 systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mcodedecipher.service: Failed with result 'exit-code'.[0m
+Feb 19 15:19:35 ubuntu-2gb-ash-2 systemd[1]: [0;1;31m[0;1;39m[0;1;31mFailed to start CodeDecipher.[0m
+Feb 19 15:22:26 ubuntu-2gb-ash-2 systemd[1]: Started CodeDecipher.
+Feb 19 15:22:26 ubuntu-2gb-ash-2 systemd[18993]: codedecipher.service: Failed to locate executable /root/codedecipher/venv/bin/uvicorn: No such file or directory
+Feb 19 15:22:26 ubuntu-2gb-ash-2 systemd[18993]: [0;1;31m[0;1;39m[0;1;31mcodedecipher.service: Failed at step EXEC spawning /root/codedecipher/venv/bin/uvicorn: No such file or directory[0m
+Feb 19 15:22:26 ubuntu-2gb-ash-2 systemd[1]: [0;1;39m[0;1;31m[0;1;39mcodedecipher.service: Main process exited, code=exited, status=203/EXEC[0m
+Feb 19 15:22:26 ubuntu-2gb-ash-2 systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mcodedecipher.service: Failed with result 'exit-code'.[0m
+Feb 19 15:22:26 ubuntu-2gb-ash-2 systemd[1]: codedecipher.service: Scheduled restart job, restart counter is at 1.
+Feb 19 15:22:26 ubuntu-2gb-ash-2 systemd[1]: Stopped CodeDecipher.
+Feb 19 15:22:26 ubuntu-2gb-ash-2 systemd[1]: Started CodeDecipher.
+Feb 19 15:22:26 ubuntu-2gb-ash-2 systemd[18995]: codedecipher.service: Failed to locate executable /root/codedecipher/venv/bin/uvicorn: No such file or directory
+Feb 19 15:22:26 ubuntu-2gb-ash-2 systemd[18995]: [0;1;31m[0;1;39m[0;1;31mcodedecipher.service: Failed at step EXEC spawning /root/codedecipher/venv/bin/uvicorn: No such file or directory[0m
+Feb 19 15:22:26 ubuntu-2gb-ash-2 systemd[1]: [0;1;39m[0;1;31m[0;1;39mcodedecipher.service: Main process exited, code=exited, status=203/EXEC[0m
+Feb 19 15:22:26 ubuntu-2gb-ash-2 systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mcodedecipher.service: Failed with result 'exit-code'.[0m
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[1]: codedecipher.service: Scheduled restart job, restart counter is at 2.
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[1]: Stopped CodeDecipher.
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[1]: Started CodeDecipher.
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[18996]: codedecipher.service: Failed to locate executable /root/codedecipher/venv/bin/uvicorn: No such file or directory
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[18996]: [0;1;31m[0;1;39m[0;1;31mcodedecipher.service: Failed at step EXEC spawning /root/codedecipher/venv/bin/uvicorn: No such file or directory[0m
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[1]: [0;1;39m[0;1;31m[0;1;39mcodedecipher.service: Main process exited, code=exited, status=203/EXEC[0m
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mcodedecipher.service: Failed with result 'exit-code'.[0m
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[1]: codedecipher.service: Scheduled restart job, restart counter is at 3.
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[1]: Stopped CodeDecipher.
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[1]: Started CodeDecipher.
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[18997]: codedecipher.service: Failed to locate executable /root/codedecipher/venv/bin/uvicorn: No such file or directory
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[18997]: [0;1;31m[0;1;39m[0;1;31mcodedecipher.service: Failed at step EXEC spawning /root/codedecipher/venv/bin/uvicorn: No such file or directory[0m
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[1]: [0;1;39m[0;1;31m[0;1;39mcodedecipher.service: Main process exited, code=exited, status=203/EXEC[0m
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mcodedecipher.service: Failed with result 'exit-code'.[0m
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[1]: codedecipher.service: Scheduled restart job, restart counter is at 4.
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[1]: Stopped CodeDecipher.
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[1]: Started CodeDecipher.
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[18998]: codedecipher.service: Failed to locate executable /root/codedecipher/venv/bin/uvicorn: No such file or directory
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[18998]: [0;1;31m[0;1;39m[0;1;31mcodedecipher.service: Failed at step EXEC spawning /root/codedecipher/venv/bin/uvicorn: No such file or directory[0m
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[1]: [0;1;39m[0;1;31m[0;1;39mcodedecipher.service: Main process exited, code=exited, status=203/EXEC[0m
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mcodedecipher.service: Failed with result 'exit-code'.[0m
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[1]: codedecipher.service: Scheduled restart job, restart counter is at 5.
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[1]: Stopped CodeDecipher.
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mcodedecipher.service: Start request repeated too quickly.[0m
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[1]: [0;1;38;5;185m[0;1;39m[0;1;38;5;185mcodedecipher.service: Failed with result 'exit-code'.[0m
+Feb 19 15:22:27 ubuntu-2gb-ash-2 systemd[1]: [0;1;31m[0;1;39m[0;1;31mFailed to start CodeDecipher.[0m

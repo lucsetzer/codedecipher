@@ -70,7 +70,8 @@ Please provide:
         "status": "processing",
         "progress": 0.1,
         "message": "Starting security scan...",
-        "created_at": asyncio.get_event_loop().time()
+        "created_at": asyncio.get_event_loop().time(),
+        "user_email": request.session.get("user_email")
     }
     
     # Save to queue
@@ -140,7 +141,8 @@ Please provide:
         "status": "processing",
         "progress": 0.1,
         "message": "Cloning repository for security scan...",
-        "created_at": asyncio.get_event_loop().time()
+        "created_at": asyncio.get_event_loop().time(),
+        "user_email": request.session.get("user_email")
     }
     
     from shared.file_queue import save_analysis
@@ -211,5 +213,3 @@ Please provide security analysis focusing on vulnerabilities, secrets, and issue
     asyncio.create_task(run_analysis(analysis_id, data, prompt))
     
     return RedirectResponse(url=f"/security-loading/{analysis_id}", status_code=303)
-    
-    asyncio.create_task(delete_later())

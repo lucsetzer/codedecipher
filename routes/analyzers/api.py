@@ -53,6 +53,7 @@ Please provide:
     
     # Store initial data
     data = {
+        "user_email": request.session.get("user_email"),
         "feature": "api",
         "api_url": api_url,
         "api_type": api_type,

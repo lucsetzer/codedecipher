@@ -1,0 +1,107 @@
+from shared.file_queue import save_analysis
+from openai import AsyncOpenAI
+
+import asyncio
+import os
+import re
+
+def clean_ai_output(text):
+    """Remove markdown symbols and clean up formatting"""
+    # Remove markdown headers (##, ###, etc)
+    text = re.sub(r'#{1,6}\s*', '', text)
+    text = re.sub(r'\*\*|__', '', text)
+    text = re.sub(r'^\s*[\*\-\+]\s+', '', text, flags=re.MULTILINE)
+    text = re.sub(r'```[\s\S]*?```', '', text)
+    text = re.sub(r'`([^`]+)`', r'\1', text)
+    text = re.sub(r'\n\s*\n\s*\n', '\n\n', text)
+    return text.strip()
+
+async def run_analysis(analysis_id: str, data: dict, prompt_template: str):
+    """Single source of truth for all analysis"""
+    try:
+        print(f"🚀 Base analysis started for {analysis_id}")
+        
+        data["progress"] = 0.3
+        data["message"] = "Processing..."
+        save_analysis(analysis_id, data)
+        
+        api_key = os.getenv("DEEPSEEK_API_KEY", "")
+        
+        if not api_key or api_key.startswith("your-"):
+            result = f"""ANALYSIS COMPLETE (Mock Mode)
+
+Feature: {data.get('feature', 'unknown')}
+Level: {data.get('level', 'professional')}
+
+This is a placeholder response. Add your DeepSeek API key to .env for real analysis."""
+            data["is_mock"] = True
+        else:
+            client = AsyncOpenAI(
+                api_key=api_key,
+                base_url="https://api.deepseek.com"
+            )
+            
+            system_message = """You are a helpful technical expert. 
+CRITICAL: Respond in PLAIN TEXT ONLY. 
+- NO markdown symbols (#, *, -, `, >, [])
+- NO asterisks for bold
+- NO hash symbols for headers
+- NO backticks for code
+Just use plain sentences with line breaks between sections.
+Explain code simply and clearly like you're talking to another developer."""
+            
+            full_prompt = prompt_template + "\n\nRemember: PLAIN TEXT ONLY. No symbols or formatting."
+            
+            response = await asyncio.wait_for(
+                client.chat.completions.create(
+                    model="deepseek-chat",
+                    messages=[
+                        {"role": "system", "content": system_message},
+                        {"role": "user", "content": full_prompt}
+                    ],
+                    max_tokens=1500,
+                    temperature=0.3
+                ),
+                timeout=45.0
+            )
+            
+            result = response.choices[0].message.content
+            data["is_mock"] = False
+        
+        data["result"] = result
+        data["status"] = "complete"
+        data["progress"] = 1.0
+        data["message"] = "Complete!"
+        
+        # ===== TOKEN DEDUCTION AND LOGGING =====
+        user_email = data.get("user_email")
+        if user_email:
+            print(f"💰 Found user_email: {user_email}")
+            from shared.auth import deduct_token
+            deduct_result = deduct_token(user_email)
+            print(f"💰 deduct_token result: {deduct_result}")
+            
+            # Log the analysis
+            try:
+                import sqlite3
+                from datetime import datetime
+                conn = sqlite3.connect('/root/codedecipher/bank.db')
+                cursor = conn.cursor()
+                cursor.execute('''
+                    INSERT INTO analyses (user_email, feature, analysis_id, timestamp)
+                    VALUES (?, ?, ?, ?)
+                ''', (user_email, data.get('feature'), analysis_id, datetime.now()))
+                conn.commit()
+                conn.close()
+                print(f"📊 Logged {data.get('feature')} analysis")
+            except Exception as log_error:
+                print(f"❌ Logging failed: {log_error}")
+        else:
+            print(f"⚠️ No user_email in data dict for feature: {data.get('feature')}")
+    except Exception as e:
+        print(f"❌ Error in base analysis: {e}")
+        data["status"] = "error"
+        data["error"] = str(e)
+        save_analysis(analysis_id, data)
+        import traceback
+        traceback.print_exc() 

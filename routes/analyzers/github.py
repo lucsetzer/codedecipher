@@ -53,6 +53,7 @@ Please provide:
     
     # Store initial data
     data = {
+        "user_email": request.session.get("user_email"),
         "feature": "github",
         "repo_url": repo_url,
         "branch": branch,

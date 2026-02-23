@@ -10,6 +10,16 @@ async def run_analysis(analysis_id: str, data: dict, prompt_template: str):
         
         data["progress"] = 0.3
         data["message"] = "Processing..."
+
+        # ===== TOKEN DEDUCTION =====
+        user_email = data.get("user_email")
+        if user_email:
+            from shared.auth import deduct_token
+            deduct_token(user_email)
+            print(f"💰 Deducted token for {user_email}")
+
+        print(f"💰 TOKEN DEBUG: user_email={user_email}, deducted={user_email is not None}")
+
         save_analysis(analysis_id, data)
         
         api_key = os.getenv("DEEPSEEK_API_KEY", "")

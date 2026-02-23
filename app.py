@@ -13,6 +13,7 @@ from routes.dashboard import router as dashboard_router
 from routes.logout import router as logout_router
 from routes.analyze import router as analyze_router
 from routes.settings import router as settings_router
+#from routes.admin import router as admin_router
 from routes.legal import router as legal_router
 from routes.waitlist import router as waitlist_router
 from starlette.middleware.sessions import SessionMiddleware
@@ -33,6 +34,7 @@ app.include_router(login_router)
 app.include_router(auth_router)
 app.include_router(dashboard_router)
 app.include_router(logout_router)
+#app.include_router(admin_router)
 app.include_router(analyze_router)
 app.include_router(settings_router)
 app.include_router(legal_router)
@@ -83,3 +85,4 @@ async def debug_routes():
         else:
             routes_list.append(f"{route.path} [MOUNT]")
     return {"routes": routes_list}
+

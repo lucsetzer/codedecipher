@@ -2,9 +2,12 @@ from routes.analyzers.base import run_analysis
 from fastapi import APIRouter, Request, Form
 from fastapi.responses import RedirectResponse, HTMLResponse
 from shared.file_queue import save_analysis
+from fastapi.templating import Jinja2Templates
 
 import uuid
 import asyncio
+
+templates = Jinja2Templates(directory="templates")
 
 print("✅ SNIPPET ROUTER IS LOADING")
 print(f"🔍 Current file: {__file__}")
@@ -52,6 +55,7 @@ Focus on:
     
     # Store initial data
     data = {
+        "user_email": request.session.get("user_email"),
         "feature": "snippet",
         "code": code[:500],
         "language": language,
@@ -88,8 +92,6 @@ Focus on:
     # Redirect to loading
     return RedirectResponse(url=f"/snippet-loading/{analysis_id}", status_code=303)
 
-
-
 @router.get("/snippet-loading/{analysis_id}")
 async def snippet_loading(analysis_id: str, request: Request):
     """Show loading page for snippet analysis"""
@@ -97,48 +99,15 @@ async def snippet_loading(analysis_id: str, request: Request):
     
     data = load_analysis(analysis_id)
     
-    # If no data found, back to form
     if not data:
         return RedirectResponse(url="/analyze/snippet", status_code=303)
     
-    # If complete, GO TO RESULTS PAGE
     if data.get("status") == "complete":
         return RedirectResponse(url=f"/result/{analysis_id}", status_code=303)
     
-    # If error, show error
-    if data.get("status") == "error":
-        return HTMLResponse(f"""
-        <html>
-        <body style="background:#0f172a;color:white;padding:4rem;">
-            <h1 style="color:#fbbf24;">Error</h1>
-            <p>{data.get('error', 'Unknown error')}</p>
-            <a href="/analyze/snippet">Try again</a>
-        </body>
-        </html>
-        """)
-    
-    # Still processing - show loading page with refresh
-    html = f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <title>Analyzing...</title>
-        <meta http-equiv="refresh" content="3">
-        <style>
-            body {{ background: #0f172a; color: white; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; }}
-            .loading {{ text-align: center; }}
-            .progress-bar {{ width: 300px; height: 6px; background: #1e293b; border-radius: 3px; margin: 2rem auto; overflow: hidden; }}
-            .progress-fill {{ height: 100%; background: #0cc0df; width: 30%; animation: pulse 2s infinite; }}
-            @keyframes pulse {{ 0% {{ opacity: 0.6; width: 30%; }} 50% {{ opacity: 1; width: 70%; }} 100% {{ opacity: 0.6; width: 30%; }} }}
-        </style>
-    </head>
-    <body>
-        <div class="loading">
-            <h1>Analyzing your code...</h1>
-            <div class="progress-bar"><div class="progress-fill"></div></div>
-            <p>This page refreshes automatically</p>
-        </div>
-    </body>
-    </html>
-    """
-    return HTMLResponse(html)
+    # Use the shared loading template with spinner
+    return templates.TemplateResponse("loading.html", {
+        "request": request,
+        "feature": "Code Snippet",
+        "analysis_id": analysis_id
+    })

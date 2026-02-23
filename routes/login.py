@@ -20,19 +20,17 @@ async def login_submit(request: Request, email: str = Form(...)):
     # Generate magic link
     token = create_magic_link(email)
     print(f"🔑 Token created: {token}")
+    
+    # Store in database
     store_magic_token(email, token)
-
-    success = store_magic_token(email, token)
-    print(f"💾 Token stored: {success}")
+    print(f"💾 Token stored")
     
-    print(f"📤 Rendering check_email.html with email: {email}")
+    # ACTUALLY SEND THE EMAIL (this is the important part!)
+    from shared.auth import send_magic_link
+    send_magic_link(email, token)
     
-    # In development, show the link
-    magic_link = f"http://localhost:8001/auth?token={token}"
-    print(f"🔗 Magic link: {magic_link}")
-    
-    # In production, you'd send this via email
+    # Show the "check your email" page
     return templates.TemplateResponse("check_email.html", {
         "request": request,
-        "message": f"Check your email! (Dev link: {magic_link})"
+        "email": email
     })
