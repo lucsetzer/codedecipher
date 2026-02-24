@@ -2,6 +2,38 @@ from shared.file_queue import save_analysis
 import os
 from openai import AsyncOpenAI
 import asyncio
+import asyncpg
+from datetime import datetime
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+async def log_analysis(analysis_id: str, data: dict):
+    """Log analysis to PostgreSQL"""
+    try:
+        conn = await asyncpg.connect(DATABASE_URL)
+        
+        # Create table if not exists
+        await conn.execute('''
+            CREATE TABLE IF NOT EXISTS analyses (
+                id TEXT PRIMARY KEY,
+                user_email TEXT NOT NULL,
+                feature TEXT NOT NULL,
+                timestamp TIMESTAMP NOT NULL,
+                tokens_used INTEGER DEFAULT 1
+            )
+        ''')
+        
+        user_email = data.get("user_email")
+        if user_email:
+            await conn.execute('''
+                INSERT INTO analyses (id, user_email, feature, timestamp)
+                VALUES ($1, $2, $3, $4)
+            ''', analysis_id, user_email, data.get('feature'), datetime.now())
+            print(f"📊 Logged {data.get('feature')} analysis for {user_email}")
+        
+        await conn.close()
+    except Exception as e:
+        print(f"❌ Failed to log analysis: {e}")
 
 async def run_analysis(analysis_id: str, data: dict, prompt_template: str):
     """Single source of truth for all analysis"""
@@ -10,16 +42,6 @@ async def run_analysis(analysis_id: str, data: dict, prompt_template: str):
         
         data["progress"] = 0.3
         data["message"] = "Processing..."
-
-        # ===== TOKEN DEDUCTION =====
-        user_email = data.get("user_email")
-        if user_email:
-            from shared.auth import deduct_token
-            deduct_token(user_email)
-            print(f"💰 Deducted token for {user_email}")
-
-        print(f"💰 TOKEN DEBUG: user_email={user_email}, deducted={user_email is not None}")
-
         save_analysis(analysis_id, data)
         
         api_key = os.getenv("DEEPSEEK_API_KEY", "")
@@ -38,7 +60,6 @@ This is a placeholder response. Add your DeepSeek API key to .env for real analy
                 base_url="https://api.deepseek.com"
             )
             
-            # Strong formatting instructions
             system_message = """You are a helpful technical expert. 
 CRITICAL: Respond in PLAIN TEXT ONLY. 
 - NO markdown symbols (#, *, -, `, >, [])
@@ -48,7 +69,6 @@ CRITICAL: Respond in PLAIN TEXT ONLY.
 Just use plain sentences with line breaks between sections.
 Explain code simply and clearly like you're talking to another developer."""
             
-            # Add reminder to user prompt
             full_prompt = prompt_template + "\n\nRemember: PLAIN TEXT ONLY. No symbols or formatting."
             
             response = await asyncio.wait_for(
@@ -71,6 +91,16 @@ Explain code simply and clearly like you're talking to another developer."""
         data["status"] = "complete"
         data["progress"] = 1.0
         data["message"] = "Complete!"
+        
+        # ===== TOKEN DEDUCTION =====
+        user_email = data.get("user_email")
+        if user_email:
+            from shared.auth import deduct_token
+            await deduct_token(user_email)
+            print(f"💰 Deducted token for {user_email}")
+            
+            # Log analysis to PostgreSQL
+            await log_analysis(analysis_id, data)
         
         save_analysis(analysis_id, data)
         print(f"✅ Base analysis complete for {analysis_id}")
