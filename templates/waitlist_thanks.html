@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Thanks! - CodeDecipher{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 4rem auto; text-align: center;">
+    <i class="fas fa-envelope-open-text" style="font-size: 4rem; color: #fbbf24; margin-bottom: 1rem;"></i>
+    <h1 style="color: white; margin-bottom: 1rem;">You're on the list!</h1>
+    <p style="color: #94a3b8; margin-bottom: 2rem;">
+        Thanks for your interest in CodeDecipher. We'll email you at <strong>{{ email }}</strong> when we launch.
+    </p>
+    <a href="/" style="display: inline-block; background: #0cc0df; color: white; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none;">
+        Back to Home
+    </a>
+</div>
+{% endblock %}

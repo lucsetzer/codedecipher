@@ -67,6 +67,5 @@ async def pro_waitlist_signup(request: Request, email: str = Form(...)):
     
     return templates.TemplateResponse("check_email.html", {
         "request": request,
-        "email": email,
-        "message": message
+        "email": email
     })
