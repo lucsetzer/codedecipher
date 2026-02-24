@@ -12,7 +12,7 @@ async def settings_page(request: Request):
     if not user_email:
         return RedirectResponse("/login", status_code=303)
     
-    tokens = get_user_tokens(user_email)
+    tokens = await get_user_tokens(user_email)
     
     return templates.TemplateResponse("settings.html", {
         "request": request,
