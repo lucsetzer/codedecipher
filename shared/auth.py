@@ -1,33 +1,169 @@
-# shared/auth.py
-
 import os
-import json
-import resend
-import sqlite3
-
+import asyncpg
 from datetime import datetime
-from dotenv import load_dotenv
 
-env_path = '/root/codedecipher/.env'
-load_dotenv()
+DB_PATH = os.getenv("DATABASE_URL")
 
-DB_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'bank.db')
-print(f"📂 Using database at: {DB_PATH}")
+async def get_db_connection():
+    """Get a database connection"""
+    return await asyncpg.connect(DB_PATH)
 
-# Debug prints
-print(f"📂 Loading .env from: {env_path}")
-print(f"🔑 RESEND_API_KEY exists: {bool(os.getenv('RESEND_API_KEY'))}")
-if os.getenv('RESEND_API_KEY'):
-    print(f"🔑 Key starts with: {os.getenv('RESEND_API_KEY')[:10]}...")
+async def store_magic_token(email: str, token: str) -> bool:
+    """Store magic token in database."""
+    print(f"💾 STORING TOKEN: {token} for {email}")
+    
+    try:
+        conn = await get_db_connection()
+        
+        # Create table if not exists
+        await conn.execute('''
+            CREATE TABLE IF NOT EXISTS magic_links (
+                token TEXT PRIMARY KEY,
+                email TEXT NOT NULL,
+                created TIMESTAMP NOT NULL,
+                used BOOLEAN DEFAULT FALSE
+            )
+        ''')
+        
+        await conn.execute('''
+            INSERT INTO magic_links (token, email, created, used)
+            VALUES ($1, $2, $3, $4)
+            ON CONFLICT (token) DO UPDATE SET
+                email = $2,
+                created = $3,
+                used = $4
+        ''', token, email, datetime.now(), False)
+        
+        await conn.close()
+        print(f"✅ Token stored for: {email}")
+        return True
+        
+    except Exception as e:
+        print(f"❌ Failed to store token: {e}")
+        import traceback
+        traceback.print_exc()
+        return False
 
-resend.api_key = os.getenv("RESEND_API_KEY")
+def create_magic_link(email: str) -> str:
+    """Create a unique token for magic link."""
+    import uuid
+    token = f"magic_{uuid.uuid4().hex}"
+    return token
 
-def send_magic_link(email: str, token: str):
-    print(f"🔑 Resend key in auth.py: {os.getenv('RESEND_API_KEY', 'NOT FOUND')[:10]}...")
+async def verify_magic_link(token: str, mark_used: bool = True):
+    """Verify a magic link token"""
+    print(f"🔍 VERIFYING TOKEN: {token}")
+    
+    try:
+        conn = await get_db_connection()
+        
+        # Check if token exists
+        result = await conn.fetchrow(
+            "SELECT email FROM magic_links WHERE token = $1",
+            token
+        )
+        
+        if result:
+            email = result['email']
+            if mark_used:
+                await conn.execute(
+                    "UPDATE magic_links SET used = TRUE WHERE token = $1",
+                    token
+                )
+            await conn.close()
+            return email
+        
+        await conn.close()
+        return None
+        
+    except Exception as e:
+        print(f"❌ verify_magic_link error: {e}")
+        return None
+
+async def get_user_tokens(email: str) -> int:
+    """Get user's remaining tokens, resetting monthly if needed."""
+    conn = await get_db_connection()
+    
+    # Create users table if not exists
+    await conn.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            email TEXT PRIMARY KEY,
+            tokens INTEGER DEFAULT 5,
+            last_token_reset TEXT
+        )
+    ''')
+    
+    # Get user's current tokens and last reset month
+    result = await conn.fetchrow(
+        "SELECT tokens, last_token_reset FROM users WHERE email = $1",
+        email
+    )
+    
+    current_month = datetime.now().strftime('%Y-%m')
+    
+    if not result:
+        # New user: give 5 tokens
+        await conn.execute('''
+            INSERT INTO users (email, tokens, last_token_reset)
+            VALUES ($1, $2, $3)
+        ''', email, 5, current_month)
+        await conn.close()
+        return 5
+    
+    tokens, last_reset_month = result['tokens'], result['last_token_reset']
+    
+    # If the month has changed, reset tokens
+    if last_reset_month != current_month:
+        tokens = 5
+        await conn.execute('''
+            UPDATE users SET tokens = $1, last_token_reset = $2 WHERE email = $3
+        ''', tokens, current_month, email)
+        print(f"🔄 Reset tokens for {email} to 5 for new month {current_month}")
+    
+    await conn.close()
+    return tokens
+
+async def deduct_token(email: str) -> bool:
+    """Deduct one token from user's balance"""
+    try:
+        conn = await get_db_connection()
+        
+        # Ensure user exists
+        current_month = datetime.now().strftime('%Y-%m')
+        await conn.execute('''
+            INSERT INTO users (email, tokens, last_token_reset)
+            VALUES ($1, $2, $3)
+            ON CONFLICT (email) DO NOTHING
+        ''', email, 5, current_month)
+        
+        # Deduct token
+        result = await conn.execute('''
+            UPDATE users SET tokens = tokens - 1
+            WHERE email = $1 AND tokens > 0
+        ''', email)
+        
+        await conn.close()
+        
+        success = result == "UPDATE 1"
+        if success:
+            print(f"✅ Deducted token for {email}")
+        else:
+            print(f"⚠️ No tokens to deduct for {email}")
+        
+        return success
+        
+    except Exception as e:
+        print(f"❌ deduct_token error: {e}")
+        return False
+
+async def send_magic_link(email: str, token: str):
     """Send magic link email via Resend"""
     magic_link = f"https://codedecipher.app/auth?token={token}"
     
     try:
+        import resend
+        resend.api_key = os.getenv("RESEND_API_KEY")
+        
         params = {
             "from": "noreply@codedecipher.app",
             "to": [email],
@@ -47,154 +183,3 @@ def send_magic_link(email: str, token: str):
     except Exception as e:
         print(f"❌ Failed to send email: {e}")
         return False
-
-def store_magic_token(email: str, token: str) -> bool:
-    print(f"💾 STORING TOKEN: {token} for {email}")
-    
-    try:
-        conn = sqlite3.connect(DB_PATH)  # ← CHANGE HERE
-        cursor = conn.cursor()
-        
-        # Debug: show what's in DB before insert
-        cursor.execute("SELECT token, email FROM magic_links")
-        existing = cursor.fetchall()
-        print(f"💾 Existing tokens in DB: {existing}")
-        
-        cursor.execute("""
-            INSERT OR REPLACE INTO magic_links (token, email, created, used)
-            VALUES (?, ?, ?, ?)
-        """, (token, email, datetime.now(), False))
-        
-        conn.commit()
-        conn.close()
-        print(f"✅ Token stored for: {email}")
-        return True
-        
-    except Exception as e:
-        print(f"❌ Failed to store token: {e}")
-        import traceback
-        traceback.print_exc()
-        return False
-
-def create_magic_link(email: str) -> str:
-    """Create a unique token for magic link."""
-    import uuid
-    token = f"magic_{uuid.uuid4().hex}"
-    return token
-
-def verify_magic_link(token: str, mark_used: bool = True):
-    print(f"🔍 VERIFYING TOKEN: {token}")
-    print(f"📂 DB Path: {DB_PATH}")
-    
-    try:
-        conn = sqlite3.connect(DB_PATH)
-        cursor = conn.cursor()
-        
-        # DUMP THE ENTIRE TABLE
-        cursor.execute("SELECT token, email, used, created FROM magic_links")
-        all_rows = cursor.fetchall()
-        print(f"📊 ALL TOKENS IN DB: {all_rows}")
-        
-        # Check if our token exists
-        cursor.execute("SELECT email FROM magic_links WHERE token = ?", (token,))
-        result = cursor.fetchone()
-        print(f"🔍 Token lookup result: {result}")
-        
-        if result:
-            email = result[0]
-            if mark_used:
-                cursor.execute("UPDATE magic_links SET used = 1 WHERE token = ?", (token,))
-                conn.commit()
-            conn.close()
-            return email
-        
-        conn.close()
-        return None
-    except Exception as e:
-        print(f"❌ verify_magic_link error: {e}")
-        return None
-    
-# Token management functions
-def get_user_tokens(email: str) -> int:
-    """Get user's remaining tokens"""
-    # This would query your user database
-    # For now, using the same storage as magic links
-    user_data = get_user_data(email)  # You'll need to create this
-    return user_data.get("tokens", 5)
-
-def deduct_token(email: str) -> bool:
-    """Deduct one token from user's balance"""
-    try:
-        conn = sqlite3.connect(DB_PATH)
-        cursor = conn.cursor()
-        
-        # Ensure user exists
-        cursor.execute(
-            "INSERT OR IGNORE INTO users (email, tokens, last_token_reset) VALUES (?, 5, datetime('now'))",
-            (email,)
-        )
-        
-        # Deduct token
-        cursor.execute(
-            "UPDATE users SET tokens = tokens - 1 WHERE email = ? AND tokens > 0",
-            (email,)
-        )
-        
-        conn.commit()
-        success = cursor.rowcount > 0
-        conn.close()
-        
-        if success:
-            print(f"✅ Deducted token for {email}")
-        else:
-            print(f"⚠️ No tokens to deduct for {email}")
-        
-        return success
-    except Exception as e:
-        print(f"❌ deduct_token error: {e}")
-        return False
-
-def reset_monthly_tokens(email: str):
-    """Reset user's tokens to monthly allowance"""
-    user_data = get_user_data(email)
-    last_reset = user_data.get("last_token_reset")
-    
-    if not last_reset or datetime.now() - datetime.fromisoformat(last_reset) > timedelta(days=30):
-        user_data["tokens"] = 5
-        user_data["last_token_reset"] = datetime.now().isoformat()
-        save_user_data(email, user_data)
-
-def get_user_tokens(email: str) -> int:
-    """Get user's remaining tokens"""
-    try:
-        conn = sqlite3.connect(DB_PATH)
-        cursor = conn.cursor()
-        
-        # Create users table if it doesn't exist
-        cursor.execute('''
-            CREATE TABLE IF NOT EXISTS users (
-                email TEXT PRIMARY KEY,
-                tokens INTEGER DEFAULT 5,
-                last_token_reset TIMESTAMP
-            )
-        ''')
-        
-        # Get or create user
-        cursor.execute("SELECT tokens FROM users WHERE email = ?", (email,))
-        result = cursor.fetchone()
-        
-        if result:
-            tokens = result[0]
-        else:
-            tokens = 5
-            cursor.execute(
-                "INSERT INTO users (email, tokens, last_token_reset) VALUES (?, ?, ?)",
-                (email, tokens, datetime.now())
-            )
-            conn.commit()
-        
-        conn.close()
-        return tokens
-    except Exception as e:
-        print(f"❌ Error getting tokens: {e}")
-        return 5  # Default fallback
