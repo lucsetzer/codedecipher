@@ -34,6 +34,17 @@ async def process_api(
 ):
     """Process API documentation analysis"""
     
+    # 1. Get user email FIRST
+    user_email = request.session.get("user_email")
+    if not user_email:
+        return RedirectResponse("/login", status_code=303)
+    
+    # 2. CHECK TOKENS - RIGHT HERE, BEFORE ANYTHING ELSE
+    from shared.auth import get_user_tokens
+    if get_user_tokens(user_email) <= 0:
+        return RedirectResponse("/insufficient-tokens", status_code=303)
+    
+    # 3. NOW create analysis_id and proceed
     analysis_id = str(uuid.uuid4())
     
     # Build prompt

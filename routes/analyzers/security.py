@@ -34,6 +34,17 @@ async def process_security(
 ):
     """Process security analysis"""
     
+    # 1. Get user email FIRST
+    user_email = request.session.get("user_email")
+    if not user_email:
+        return RedirectResponse("/login", status_code=303)
+    
+    # 2. CHECK TOKENS - RIGHT HERE
+    from shared.auth import get_user_tokens
+    if get_user_tokens(user_email) <= 0:
+        return RedirectResponse("/insufficient-tokens", status_code=303)
+    
+    # 3. NOW create analysis_id and proceed
     analysis_id = str(uuid.uuid4())
     
     # Handle file upload if present
@@ -41,7 +52,7 @@ async def process_security(
     if file and file.filename:
         content = (await file.read()).decode()[:10000]
     
-    # Build prompt (use your existing security prompt)
+    # Build prompt
     prompt = f"""Perform a security review of this code for a {level} audience.
 
 Scan type: {scan_type}
