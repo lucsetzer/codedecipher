@@ -40,7 +40,7 @@ async def process_github(
     
     # 2. CHECK TOKENS - RIGHT HERE
     from shared.auth import get_user_tokens
-    if get_user_tokens(user_email) <= 0:
+    if await get_user_tokens(user_email) <= 0:
         return RedirectResponse("/insufficient-tokens", status_code=303)
     
     # 3. NOW create analysis_id and proceed
