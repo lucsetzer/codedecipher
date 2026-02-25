@@ -341,42 +341,34 @@
     </nav>
 
     <!-- HERO -->
-    <section class="section section-dark hero">
-        <div class="container" style="text-align: center;">
-            <div style="background: #0f172a; padding: 4rem 1rem; text-align: center; border-bottom: 1px solid #334155;">
-                <div style="max-width: 900px; margin: 0 auto;">
-                    
-                    <div style="font-size: 4rem; color: #fbbf24; margin-bottom: 1rem;">
-                    <i class="fas fa-lightbulb"></i>
-                    </div>
-                    
-                    <h1 style="color: white; font-size: 3rem; margin-bottom: 1rem; line-height: 1.2;">
-                    Understand any codebase<br>in minutes
-                    </h1>
-                    
-                    <p style="color: #94a3b8; font-size: 1.2rem; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
-                    Paste any GitHub URL, code snippet, or API docs — get plain English explanations tailored to your skill level.
-                    </p>
-                    
-                    
-                    <p style="color: #64748b; font-size: 0.9rem; margin-top: 1rem;">
-                        No sign-up required. See what happens when you analyze a real repo.
-                    </p>
-                    </div>
-                    
-                    <!-- Video hero (commented out — replace with your video later) -->
-                    
-                    <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; overflow: hidden;">
-                    <video autoplay loop muted playsinline style="width: 100%; display: block;">
-                        <source src="/static/videos/CodeDecipher.mov" type="video/quicktime">
-                    </video>
-                    </div>
-                    
-                    
-                </div>
-            
-        </div>
-    </section>
+    <section class="section section-dark hero" style="position: relative; overflow: hidden; padding: 0;">
+  
+  <!-- Background video -->
+  <video autoplay loop muted playsinline style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.15;">
+    <source src="/static/videos/CodeDecipher.mov" type="video/quicktime">
+  </video>
+  
+  <!-- Content on top of video -->
+  <div style="position: relative; z-index: 2; padding: 4rem 1rem; text-align: center; max-width: 900px; margin: 0 auto;">
+    
+    <div style="font-size: 4rem; color: #fbbf24; margin-bottom: 1rem;">
+      <i class="fas fa-lightbulb"></i>
+    </div>
+    
+    <h1 style="color: white; font-size: 3rem; margin-bottom: 1rem; line-height: 1.2;">
+      Understand any codebase<br>in minutes
+    </h1>
+    
+    <p style="color: #94a3b8; font-size: 1.2rem; margin-bottom: 2rem;">
+      Paste any GitHub URL, code snippet, or API docs — get plain English explanations tailored to your skill level.
+    </p>
+    
+    <p style="color: #64748b; font-size: 0.9rem;">
+      No sign-up required. See what happens when you analyze a real repo.
+    </p>
+    
+  </div>
+</section>
     
 
     <!-- PRIVACY & SECURITY BANNER - Moved to top, using brand yellow -->
@@ -434,226 +426,101 @@
     </div>
 </section>
 
-    <!-- FEATURES -->
-    <section id="features" class="section section-light" style="padding: 4rem 0; background: #0f172a;">
-    <div style="max-width: 1200px; margin: 0 auto; padding: 4rem 1rem;">
+    <!-- FEATURES SECTION -->
+<div style="max-width: 1200px; margin: 0 auto; padding: 4rem 1rem;">
 
   <h2 style="text-align: center; color: white; font-size: 2.2rem; margin-bottom: 1rem;">
     See it in action
   </h2>
   
-  <p style="text-align: center; color: #94a3b8; margin-bottom: 3rem; max-width: 600px; margin-left: auto; margin-right: auto;">
-    Click any card to watch the transformation — from messy code to clear understanding.
+  <p style="text-align: center; color: #94a3b8; margin-bottom: 3rem;">
+    Click any card to see the full transformation.
   </p>
 
-  <!-- GITHUB CARD -->
-  <div class="demo-card">
-    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-      <span style="font-size: 2rem;">📦</span>
-      <h3 style="color: white; margin: 0; font-size: 1.5rem;">GitHub Repository Analysis</h3>
-    </div>
+  <!-- Card Grid -->
+  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2rem;" id="features-grid">
     
-    <button class="try-button" onclick="toggleDemo('github')">
-      ✨ Show me how it works
-    </button>
-    
-    <div id="github-demo" style="display: none;">
-      <div class="step-container">
-        
-        <!-- Step 1: Input -->
-        <div class="step-item">
-          <div class="step-header">
-            <span class="step-number">1</span>
-            <span style="color: white; font-weight: 500;">Paste any GitHub URL</span>
-          </div>
-          <img src="/static/images/github1.png" alt="GitHub analyzer input form" class="demo-image">
-        </div>
-        
-        <!-- Step 2: Processing -->
-        <div class="step-item">
-          <div class="step-header">
-            <span class="step-number">2</span>
-            <span style="color: white; font-weight: 500;">AI analyzes the codebase</span>
-          </div>
-          <img src="/static/images/progress_screen.png" alt="Loading animation" class="demo-image">
-        </div>
-        
-        <!-- Step 3: Output -->
-        <div class="step-item">
-          <div class="step-header">
-            <span class="step-number">3</span>
-            <span style="color: white; font-weight: 500;">Get instant understanding</span>
-          </div>
-          <img src="/static/images/github2.png" alt="Analysis results" class="demo-image">
-        </div>
-      </div>
+    <!-- GitHub Card -->
+    <div class="feature-card" onclick="toggleCard(this)" style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; cursor: pointer; transition: all 0.2s;">
+      <div style="font-size: 2rem; margin-bottom: 0.5rem;">📦</div>
+      <h3 style="color: white; margin: 0 0 0.25rem 0; font-size: 1.2rem;">GitHub Repos</h3>
+      <p style="color: #94a3b8; margin: 0 0 0.5rem 0; font-size: 0.9rem;">Understand any repository</p>
+      <span style="color: #0cc0df; font-size: 0.8rem;">▼ Click to expand</span>
       
-      <!-- Call to action -->
-      <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #334155;">
-        <p style="color: #94a3b8; margin-bottom: 1rem;">Ready to try it with your own code?</p>
-        <a href="/analyze/github" class="cta-button">
-          Analyze a GitHub repo →
-        </a>
+      <!-- Demo content (hidden initially) -->
+      <div class="demo-content" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #334155;">
+        <!-- Your 3-step images here -->
+        <p style="color: white;">Demo content will go here</p>
       </div>
     </div>
+    
+    <!-- Snippet Card -->
+    <div class="feature-card" onclick="toggleCard(this)" style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; cursor: pointer;">
+      <div style="font-size: 2rem; margin-bottom: 0.5rem;">✂️</div>
+      <h3 style="color: white; margin: 0 0 0.25rem 0; font-size: 1.2rem;">Code Snippets</h3>
+      <p style="color: #94a3b8; margin: 0 0 0.5rem 0; font-size: 0.9rem;">Understand any function</p>
+      <span style="color: #0cc0df; font-size: 0.8rem;">▼ Click to expand</span>
+      
+      <div class="demo-content" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #334155;">
+        <p style="color: white;">Demo content will go here</p>
+      </div>
+    </div>
+    
+    <!-- Security Card -->
+    <div class="feature-card" onclick="toggleCard(this)" style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; cursor: pointer;">
+      <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔒</div>
+      <h3 style="color: white; margin: 0 0 0.25rem 0; font-size: 1.2rem;">Security Scanner</h3>
+      <p style="color: #94a3b8; margin: 0 0 0.5rem 0; font-size: 0.9rem;">Find vulnerabilities</p>
+      <span style="color: #0cc0df; font-size: 0.8rem;">▼ Click to expand</span>
+      
+      <div class="demo-content" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #334155;">
+        <p style="color: white;">Demo content will go here</p>
+      </div>
+    </div>
+    
+    <!-- API Card -->
+    <div class="feature-card" onclick="toggleCard(this)" style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; cursor: pointer;">
+      <div style="font-size: 2rem; margin-bottom: 0.5rem;">☁️</div>
+      <h3 style="color: white; margin: 0 0 0.25rem 0; font-size: 1.2rem;">API Docs</h3>
+      <p style="color: #94a3b8; margin: 0 0 0.5rem 0; font-size: 0.9rem;">Break down documentation</p>
+      <span style="color: #0cc0df; font-size: 0.8rem;">▼ Click to expand</span>
+      
+      <div class="demo-content" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #334155;">
+        <p style="color: white;">Demo content will go here</p>
+      </div>
+    </div>
+    
   </div>
+</div>
 
-  <!-- SNIPPET CARD -->
-  <div class="demo-card">
-    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-      <span style="font-size: 2rem;">✂️</span>
-      <h3 style="color: white; margin: 0; font-size: 1.5rem;">Code Snippet Analysis</h3>
-    </div>
-    
-    <button class="try-button" onclick="toggleDemo('snippet')">
-      ✨ Show me how it works
-    </button>
-    
-    <div id="snippet-demo" style="display: none;">
-      <div class="step-container">
-        
-        <!-- Step 1: Input -->
-        <div class="step-item">
-          <div class="step-header">
-            <span class="step-number">1</span>
-            <span style="color: white; font-weight: 500;">Paste your code</span>
-          </div>
-          <img src="/static/images/snippet1.png" alt="Snippet input form" class="demo-image">
-        </div>
-        
-        <!-- Step 2: Processing -->
-        <div class="step-item">
-          <div class="step-header">
-            <span class="step-number">2</span>
-            <span style="color: white; font-weight: 500;">AI explains the logic</span>
-          </div>
-          <img src="/static/images/progress_screen.png" alt="Loading animation" class="demo-image">
-        </div>
-        
-        <!-- Step 3: Output -->
-        <div class="step-item">
-          <div class="step-header">
-            <span class="step-number">3</span>
-            <span style="color: white; font-weight: 500;">Understand what it does</span>
-          </div>
-          <img src="/static/images/snippet2.png" alt="Snippet analysis results" class="demo-image">
-        </div>
-      </div>
-      
-      <!-- Call to action -->
-      <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #334155;">
-        <p style="color: #94a3b8; margin-bottom: 1rem;">Got a tricky function?</p>
-        <a href="/analyze/snippet" class="cta-button">
-          Analyze a snippet →
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- SECURITY CARD -->
-  <div class="demo-card">
-    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-      <span style="font-size: 2rem;">🔒</span>
-      <h3 style="color: white; margin: 0; font-size: 1.5rem;">Security Scanner</h3>
-    </div>
-    
-    <button class="try-button" onclick="toggleDemo('security')">
-      ✨ Show me how it works
-    </button>
-    
-    <div id="security-demo" style="display: none;">
-      <div class="step-container">
-        
-        <!-- Step 1: Input -->
-        <div class="step-item">
-          <div class="step-header">
-            <span class="step-number">1</span>
-            <span style="color: white; font-weight: 500;">Paste your code</span>
-          </div>
-          <img src="/static/images/security1.png" alt="Security scanner input" class="demo-image">
-        </div>
-        
-        <!-- Step 2: Processing -->
-        <div class="step-item">
-          <div class="step-header">
-            <span class="step-number">2</span>
-            <span style="color: white; font-weight: 500;">AI finds vulnerabilities</span>
-          </div>
-          <img src="/static/images/progress_screen.png" alt="Loading animation" class="demo-image">
-        </div>
-        
-        <!-- Step 3: Output -->
-        <div class="step-item">
-          <div class="step-header">
-            <span class="step-number">3</span>
-            <span style="color: white; font-weight: 500;">See what to fix</span>
-          </div>
-          <img src="/static/images/security2.png" alt="Security scan results" class="demo-image">
-        </div>
-      </div>
-      
-      <!-- Call to action -->
-      <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #334155;">
-        <p style="color: #94a3b8; margin-bottom: 1rem;">Worried about your code's security?</p>
-        <a href="/analyze/security" class="cta-button">
-          Run a security scan →
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- API CARD -->
-  <div class="demo-card">
-    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-      <span style="font-size: 2rem;">☁️</span>
-      <h3 style="color: white; margin: 0; font-size: 1.5rem;">API Documentation</h3>
-    </div>
-    
-    <button class="try-button" onclick="toggleDemo('api')">
-      ✨ Show me how it works
-    </button>
-    
-    <div id="api-demo" style="display: none;">
-      <div class="step-container">
-        
-        <!-- Step 1: Input -->
-        <div class="step-item">
-          <div class="step-header">
-            <span class="step-number">1</span>
-            <span style="color: white; font-weight: 500;">Paste API docs URL</span>
-          </div>
-          <img src="/static/images/API1.png" alt="API docs input" class="demo-image">
-        </div>
-        
-        <!-- Step 2: Processing -->
-        <div class="step-item">
-          <div class="step-header">
-            <span class="step-number">2</span>
-            <span style="color: white; font-weight: 500;">AI breaks it down</span>
-          </div>
-          <img src="/static/images/progress_screen.png" alt="Loading animation" class="demo-image">
-        </div>
-        
-        <!-- Step 3: Output -->
-        <div class="step-item">
-          <div class="step-header">
-            <span class="step-number">3</span>
-            <span style="color: white; font-weight: 500;">Understand endpoints & auth</span>
-          </div>
-          <img src="/static/images/api2.png" alt="API analysis results" class="demo-image">
-        </div>
-      </div>
-      
-      <!-- Call to action -->
-      <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #334155;">
-        <p style="color: #94a3b8; margin-bottom: 1rem;">API docs giving you a headache?</p>
-        <a href="/analyze/api" class="cta-button">
-          Analyze API docs →
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
+<script>
+function toggleCard(card) {
+  // If already expanded, collapse it
+  if (card.classList.contains('expanded')) {
+    card.classList.remove('expanded');
+    card.style.gridColumn = 'span 1';
+    card.querySelector('.demo-content').style.display = 'none';
+    return;
+  }
+  
+  // Collapse any other expanded cards
+  document.querySelectorAll('.feature-card.expanded').forEach(c => {
+    c.classList.remove('expanded');
+    c.style.gridColumn = 'span 1';
+    c.querySelector('.demo-content').style.display = 'none';
+  });
+  
+  // Expand this card
+  card.classList.add('expanded');
+  card.style.gridColumn = 'span 2';
+  card.querySelector('.demo-content').style.display = 'block';
+  
+  // Smooth scroll
+  setTimeout(() => {
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 100);
+}
+</script>
 
     <!-- PRICING SECTION -->
 <section id="pricing" style="padding: 4rem 0; background: #0f172a;">
