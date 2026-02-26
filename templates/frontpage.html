@@ -435,7 +435,7 @@
   <!-- Card Grid -->
   <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2rem;" id="features-grid">
     
-    <!-- GitHub Card -->
+    <!-- ========== GITHUB CARD ========== -->
     <div class="feature-card" onclick="toggleCard(this)" style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; cursor: pointer; transition: all 0.2s;">
       <div style="font-size: 2rem; margin-bottom: 0.5rem;">📦</div>
       <h3 style="color: white; margin: 0 0 0.25rem 0; font-size: 1.2rem;">GitHub Repos</h3>
@@ -444,12 +444,48 @@
       
       <!-- Demo content (hidden initially) -->
       <div class="demo-content" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #334155;">
-        <!-- Your 3-step images here -->
-        <p style="color: white;">Demo content will go here</p>
+        
+        <!-- 3-step image grid -->
+        <div style="display: grid; gap: 1.5rem; margin-top: 1rem;">
+          
+          <!-- Step 1: Input -->
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">1</span>
+              <span style="color: white;">Paste GitHub URL</span>
+            </div>
+            <img src="/static/images/github1.png" alt="GitHub input" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
+          </div>
+          
+          <!-- Step 2: Processing -->
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">2</span>
+              <span style="color: white;">AI analyzes codebase</span>
+            </div>
+            <img src="/static/images/progress_screen.png" alt="Loading" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
+          </div>
+          
+          <!-- Step 3: Output -->
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">3</span>
+              <span style="color: white;">Get instant insights</span>
+            </div>
+            <img src="/static/images/github2.png" alt="GitHub results" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
+          </div>
+          
+          <!-- Try it button -->
+          <div style="text-align: center; margin-top: 1rem;">
+            <a href="/analyze/github" style="display: inline-block; background: #0cc0df; color: white; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none;">
+              Try GitHub Analyzer →
+            </a>
+          </div>
+        </div>
       </div>
     </div>
     
-    <!-- Snippet Card -->
+    <!-- ========== SNIPPET CARD ========== -->
     <div class="feature-card" onclick="toggleCard(this)" style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; cursor: pointer;">
       <div style="font-size: 2rem; margin-bottom: 0.5rem;">✂️</div>
       <h3 style="color: white; margin: 0 0 0.25rem 0; font-size: 1.2rem;">Code Snippets</h3>
@@ -457,11 +493,47 @@
       <span style="color: #0cc0df; font-size: 0.8rem;">▼ Click to expand</span>
       
       <div class="demo-content" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #334155;">
-        <p style="color: white;">Demo content will go here</p>
+        
+        <div style="display: grid; gap: 1.5rem; margin-top: 1rem;">
+          
+          <!-- Step 1: Input -->
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">1</span>
+              <span style="color: white;">Paste your code</span>
+            </div>
+            <img src="/static/images/snippet1.png" alt="Snippet input" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
+          </div>
+          
+          <!-- Step 2: Processing -->
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">2</span>
+              <span style="color: white;">AI explains logic</span>
+            </div>
+            <img src="/static/images/progress_screen.png" alt="Loading" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
+          </div>
+          
+          <!-- Step 3: Output -->
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">3</span>
+              <span style="color: white;">Understand what it does</span>
+            </div>
+            <img src="/static/images/snippet2.png" alt="Snippet results" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
+          </div>
+          
+          <!-- Try it button -->
+          <div style="text-align: center; margin-top: 1rem;">
+            <a href="/analyze/snippet" style="display: inline-block; background: #0cc0df; color: white; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none;">
+              Try Snippet Analyzer →
+            </a>
+          </div>
+        </div>
       </div>
     </div>
     
-    <!-- Security Card -->
+    <!-- ========== SECURITY CARD ========== -->
     <div class="feature-card" onclick="toggleCard(this)" style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; cursor: pointer;">
       <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔒</div>
       <h3 style="color: white; margin: 0 0 0.25rem 0; font-size: 1.2rem;">Security Scanner</h3>
@@ -469,11 +541,47 @@
       <span style="color: #0cc0df; font-size: 0.8rem;">▼ Click to expand</span>
       
       <div class="demo-content" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #334155;">
-        <p style="color: white;">Demo content will go here</p>
+        
+        <div style="display: grid; gap: 1.5rem; margin-top: 1rem;">
+          
+          <!-- Step 1: Input -->
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">1</span>
+              <span style="color: white;">Paste your code</span>
+            </div>
+            <img src="/static/images/security1.png" alt="Security input" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
+          </div>
+          
+          <!-- Step 2: Processing -->
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">2</span>
+              <span style="color: white;">AI scans for issues</span>
+            </div>
+            <img src="/static/images/progress_screen.png" alt="Loading" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
+          </div>
+          
+          <!-- Step 3: Output -->
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">3</span>
+              <span style="color: white;">See what to fix</span>
+            </div>
+            <img src="/static/images/security2.png" alt="Security results" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
+          </div>
+          
+          <!-- Try it button -->
+          <div style="text-align: center; margin-top: 1rem;">
+            <a href="/analyze/security" style="display: inline-block; background: #0cc0df; color: white; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none;">
+              Try Security Scanner →
+            </a>
+          </div>
+        </div>
       </div>
     </div>
     
-    <!-- API Card -->
+    <!-- ========== API CARD ========== -->
     <div class="feature-card" onclick="toggleCard(this)" style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; cursor: pointer;">
       <div style="font-size: 2rem; margin-bottom: 0.5rem;">☁️</div>
       <h3 style="color: white; margin: 0 0 0.25rem 0; font-size: 1.2rem;">API Docs</h3>
@@ -481,7 +589,43 @@
       <span style="color: #0cc0df; font-size: 0.8rem;">▼ Click to expand</span>
       
       <div class="demo-content" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #334155;">
-        <p style="color: white;">Demo content will go here</p>
+        
+        <div style="display: grid; gap: 1.5rem; margin-top: 1rem;">
+          
+          <!-- Step 1: Input -->
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">1</span>
+              <span style="color: white;">Paste API docs URL</span>
+            </div>
+            <img src="/static/images/api1.png" alt="API input" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
+          </div>
+          
+          <!-- Step 2: Processing -->
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">2</span>
+              <span style="color: white;">AI analyzes documentation</span>
+            </div>
+            <img src="/static/images/progress_screen.png" alt="Loading" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
+          </div>
+          
+          <!-- Step 3: Output -->
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">3</span>
+              <span style="color: white;">Understand endpoints & auth</span>
+            </div>
+            <img src="/static/images/api2.png" alt="API results" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
+          </div>
+          
+          <!-- Try it button -->
+          <div style="text-align: center; margin-top: 1rem;">
+            <a href="/analyze/api" style="display: inline-block; background: #0cc0df; color: white; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none;">
+              Try API Analyzer →
+            </a>
+          </div>
+        </div>
       </div>
     </div>
     
