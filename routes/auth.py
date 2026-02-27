@@ -6,7 +6,9 @@ router = APIRouter()
 
 @router.get("/auth")
 async def auth_callback(request: Request, token: str):
+    print(f" Token: {token}")
     email = await verify_magic_link(token)
+    print(f"Email  is type: {type(email)}")
     
     if not email:
         return RedirectResponse("/login?error=invalid_token", status_code=303)
