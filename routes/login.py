@@ -22,12 +22,12 @@ async def login_submit(request: Request, email: str = Form(...)):
     print(f"🔑 Token created: {token}")
     
     # Store in database
-    store_magic_token(email, token)
+    await store_magic_token(email, token)
     print(f"💾 Token stored")
     
     # ACTUALLY SEND THE EMAIL (this is the important part!)
     from shared.auth import send_magic_link
-    send_magic_link(email, token)
+    await send_magic_link(email, token)
     
     # Show the "check your email" page
     return templates.TemplateResponse("check_email.html", {
