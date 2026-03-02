@@ -340,25 +340,106 @@
         </ul>
     </nav>
 
-    <!-- HERO -->
-    <section class="section section-dark hero" style="position: relative; overflow: hidden; padding: 0;">
+    <!-- HERO with LIVE DEMO -->
+<section class="section section-dark hero" style="position: relative; overflow: hidden; padding: 2rem 0;">
   
-  <!-- Content on top of video -->
-  <div style="position: relative; z-index: 2; padding: 4rem 1rem; text-align: center; max-width: 900px; margin: 0 auto;">
-    
-    <div style="font-size: 4rem; color: #fbbf24; margin-bottom: 1rem;">
-      <i class="fas fa-lightbulb"></i>
+    <!-- Content on top of video -->
+    <div style="position: relative; z-index: 2; padding: 2rem 1rem 4rem; text-align: center; max-width: 1000px; margin: 0 auto;">
+        
+        <div style="font-size: 4rem; color: #fbbf24; margin-bottom: 1rem;">
+            <i class="fas fa-lightbulb"></i>
+        </div>
+        
+        <h1 style="color: white; font-size: 3rem; margin-bottom: 1rem; line-height: 1.2;">
+            Understand any codebase<br>in minutes
+        </h1>
+        
+        <p style="color: #94a3b8; font-size: 1.2rem; margin-bottom: 3rem;">
+            Paste any GitHub URL, code snippet, security scan, or API docs — Finally understand that codebase you inherited.
+        </p>
+        
+        <!-- LIVE DEMO BOX -->
+        <div style="
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            border: 1px solid #334155;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        ">
+            <form id="demo-form">
+                <textarea 
+                    name="code" 
+                    id="demo-code" 
+                    placeholder='Paste your code here. Example:
+function hello() {
+    console.log("Hello world");
+}' 
+                    rows="6"
+                    style="
+                        width: 100%;
+                        padding: 1rem;
+                        background: #1e293b;
+                        color: #e2e8f0;
+                        border: 1px solid #475569;
+                        border-radius: 8px;
+                        font-family: monospace;
+                        font-size: 0.9rem;
+                        margin-bottom: 1rem;
+                        resize: vertical;
+                    "
+                    required
+                ></textarea>
+                
+                <button 
+                    type="submit" 
+                    style="
+                        background: #fbbf24;
+                        color: #0f172a;
+                        border: none;
+                        padding: 0.75rem 2rem;
+                        font-size: 1.1rem;
+                        font-weight: 600;
+                        border-radius: 8px;
+                        cursor: pointer;
+                        transition: background 0.2s;
+                        width: 100%;
+                    "
+                    onmouseover="this.style.background='#f59e0b'"
+                    onmouseout="this.style.background='#fbbf24'"
+                >
+                    Analyze Demo
+                </button>
+            </form>
+            
+            <!-- Demo output area (hidden initially) -->
+            <div id="demo-output" style="
+                margin-top: 1.5rem;
+                padding: 1rem;
+                background: #0f172a;
+                border-radius: 8px;
+                border: 1px solid #334155;
+                text-align: left;
+                font-family: monospace;
+                color: #e2e8f0;
+                display: none;
+                max-height: 300px;
+                overflow-y: auto;
+            "></div>
+            
+            <p style="
+                color: #94a3b8;
+                font-size: 0.85rem;
+                margin-top: 1rem;
+                text-align: center;
+            ">
+                <i class="fas fa-shield-alt" style="margin-right: 0.25rem;"></i>
+                No signup. No credit card. Just try it. (3 demos per hour)
+            </p>
+        </div>
     </div>
-    
-    <h1 style="color: white; font-size: 3rem; margin-bottom: 1rem; line-height: 1.2;">
-      Understand any codebase<br>in minutes
-    </h1>
-    
-    <p style="color: #94a3b8; font-size: 1.2rem; margin-bottom: 2rem;">
-      Paste any GitHub URL, code snippet, or API docs — get plain English explanations tailored to your skill level.
-    </p>
-    
-  </div>
 </section>
     
 
@@ -417,215 +498,83 @@
     </div>
 </section>
 
-    <!-- FEATURES SECTION -->
+<!-- FEATURES SECTION -->
 <div style="max-width: 1200px; margin: 0 auto; padding: 4rem 1rem;">
 
   <h2 style="text-align: center; color: white; font-size: 2.2rem; margin-bottom: 1rem;">
-    See it in action
+    What you can analyze
   </h2>
   
   <p style="text-align: center; color: #94a3b8; margin-bottom: 3rem;">
-    Click any card to see the full transformation.
+    Four ways to understand your codebase — no signup required to try.
   </p>
 
   <!-- Card Grid -->
-  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 2rem;" id="features-grid">
+  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 2rem;">
     
-    <!-- ========== GITHUB CARD ========== -->
-    <div class="feature-card" onclick="toggleCard(this)" style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; cursor: pointer; transition: all 0.2s;">
-      <div style="font-size: 2rem; margin-bottom: 0.5rem;">📦</div>
-      <h3 style="color: white; margin: 0 0 0.25rem 0; font-size: 1.2rem;">GitHub Repos</h3>
-      <p style="color: #94a3b8; margin: 0 0 0.5rem 0; font-size: 0.9rem;">Understand any repository</p>
-      <span style="color: #0cc0df; font-size: 0.8rem;">▼ Click to expand</span>
-      
-      <!-- Demo content (hidden initially) -->
-      <div class="demo-content" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #334155;">
-        
-        <!-- 3-step image grid -->
-        <div style="display: grid; gap: 1.5rem; margin-top: 1rem;">
-          
-          <!-- Step 1: Input -->
-          <div>
-            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">1</span>
-              <span style="color: white;">Paste GitHub URL</span>
-            </div>
-            <img src="/static/images/github1.png" alt="GitHub input" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
-          </div>
-          
-          <!-- Step 2: Processing -->
-          <div>
-            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">2</span>
-              <span style="color: white;">AI analyzes codebase</span>
-            </div>
-            <img src="/static/images/progress_screen.png" alt="Loading" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
-          </div>
-          
-          <!-- Step 3: Output -->
-          <div>
-            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">3</span>
-              <span style="color: white;">Get instant insights</span>
-            </div>
-            <img src="/static/images/github2.png" alt="GitHub results" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
-          </div>
-          
-          <!-- Try it button -->
-          <div style="text-align: center; margin-top: 1rem;">
-            <a href="/analyze/github" style="display: inline-block; background: #0cc0df; color: white; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none;">
-              Try GitHub Analyzer →
-            </a>
-          </div>
-        </div>
+    <!-- GitHub Card -->
+    <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 2rem 1.5rem; transition: all 0.2s;">
+      <div style="font-size: 2.5rem; color: #fbbf24; margin-bottom: 1rem;">
+        <i class="fab fa-github"></i>
       </div>
+      <h3 style="color: white; margin: 0 0 0.5rem 0; font-size: 1.3rem;">GitHub Repos</h3>
+      <p style="color: #94a3b8; margin: 0 0 1rem 0; font-size: 0.95rem; line-height: 1.5;">
+        Understand any repository in minutes. Perfect for inherited code or open-source exploration.
+      </p>
+      <a href="/analyze/github" style="color: #fbbf24; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem;">
+        Try it <i class="fas fa-arrow-right" style="font-size: 0.8rem;"></i>
+      </a>
     </div>
     
-    <!-- ========== SNIPPET CARD ========== -->
-    <div class="feature-card" onclick="toggleCard(this)" style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; cursor: pointer;">
-      <div style="font-size: 2rem; margin-bottom: 0.5rem;">✂️</div>
-      <h3 style="color: white; margin: 0 0 0.25rem 0; font-size: 1.2rem;">Code Snippets</h3>
-      <p style="color: #94a3b8; margin: 0 0 0.5rem 0; font-size: 0.9rem;">Understand any function</p>
-      <span style="color: #0cc0df; font-size: 0.8rem;">▼ Click to expand</span>
-      
-      <div class="demo-content" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #334155;">
-        
-        <div style="display: grid; gap: 1.5rem; margin-top: 1rem;">
-          
-          <!-- Step 1: Input -->
-          <div>
-            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">1</span>
-              <span style="color: white;">Paste your code</span>
-            </div>
-            <img src="/static/images/snippet1.png" alt="Snippet input" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
-          </div>
-          
-          <!-- Step 2: Processing -->
-          <div>
-            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">2</span>
-              <span style="color: white;">AI explains logic</span>
-            </div>
-            <img src="/static/images/progress_screen.png" alt="Loading" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
-          </div>
-          
-          <!-- Step 3: Output -->
-          <div>
-            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">3</span>
-              <span style="color: white;">Understand what it does</span>
-            </div>
-            <img src="/static/images/snippet2.png" alt="Snippet results" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
-          </div>
-          
-          <!-- Try it button -->
-          <div style="text-align: center; margin-top: 1rem;">
-            <a href="/analyze/snippet" style="display: inline-block; background: #0cc0df; color: white; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none;">
-              Try Snippet Analyzer →
-            </a>
-          </div>
-        </div>
+    <!-- Snippet Card -->
+    <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 2rem 1.5rem;">
+      <div style="font-size: 2.5rem; color: #fbbf24; margin-bottom: 1rem;">
+        <i class="fas fa-code"></i>
       </div>
+      <h3 style="color: white; margin: 0 0 0.5rem 0; font-size: 1.3rem;">Code Snippets</h3>
+      <p style="color: #94a3b8; margin: 0 0 1rem 0; font-size: 0.95rem; line-height: 1.5;">
+        Paste any function or file and get instant explanations, logic breakdowns, and improvement suggestions.
+      </p>
+      <a href="/analyze/snippet" style="color: #fbbf24; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem;">
+        Try it <i class="fas fa-arrow-right" style="font-size: 0.8rem;"></i>
+      </a>
     </div>
     
-    <!-- ========== SECURITY CARD ========== -->
-    <div class="feature-card" onclick="toggleCard(this)" style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; cursor: pointer;">
-      <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔒</div>
-      <h3 style="color: white; margin: 0 0 0.25rem 0; font-size: 1.2rem;">Security Scanner</h3>
-      <p style="color: #94a3b8; margin: 0 0 0.5rem 0; font-size: 0.9rem;">Find vulnerabilities</p>
-      <span style="color: #0cc0df; font-size: 0.8rem;">▼ Click to expand</span>
-      
-      <div class="demo-content" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #334155;">
-        
-        <div style="display: grid; gap: 1.5rem; margin-top: 1rem;">
-          
-          <!-- Step 1: Input -->
-          <div>
-            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">1</span>
-              <span style="color: white;">Paste your code</span>
-            </div>
-            <img src="/static/images/security1.png" alt="Security input" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
-          </div>
-          
-          <!-- Step 2: Processing -->
-          <div>
-            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">2</span>
-              <span style="color: white;">AI scans for issues</span>
-            </div>
-            <img src="/static/images/progress_screen.png" alt="Loading" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
-          </div>
-          
-          <!-- Step 3: Output -->
-          <div>
-            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">3</span>
-              <span style="color: white;">See what to fix</span>
-            </div>
-            <img src="/static/images/security2.png" alt="Security results" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
-          </div>
-          
-          <!-- Try it button -->
-          <div style="text-align: center; margin-top: 1rem;">
-            <a href="/analyze/security" style="display: inline-block; background: #0cc0df; color: white; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none;">
-              Try Security Scanner →
-            </a>
-          </div>
-        </div>
+    <!-- Security Card -->
+    <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 2rem 1.5rem;">
+      <div style="font-size: 2.5rem; color: #fbbf24; margin-bottom: 1rem;">
+        <i class="fas fa-shield-alt"></i>
       </div>
+      <h3 style="color: white; margin: 0 0 0.5rem 0; font-size: 1.3rem;">Security Scanner</h3>
+      <p style="color: #94a3b8; margin: 0 0 1rem 0; font-size: 0.95rem; line-height: 1.5;">
+        Identify vulnerabilities, hardcoded secrets, and security anti-patterns in your code.
+      </p>
+      <a href="/analyze/security" style="color: #fbbf24; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem;">
+        Try it <i class="fas fa-arrow-right" style="font-size: 0.8rem;"></i>
+      </a>
     </div>
     
-    <!-- ========== API CARD ========== -->
-    <div class="feature-card" onclick="toggleCard(this)" style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; cursor: pointer;">
-      <div style="font-size: 2rem; margin-bottom: 0.5rem;">☁️</div>
-      <h3 style="color: white; margin: 0 0 0.25rem 0; font-size: 1.2rem;">API Docs</h3>
-      <p style="color: #94a3b8; margin: 0 0 0.5rem 0; font-size: 0.9rem;">Break down documentation</p>
-      <span style="color: #0cc0df; font-size: 0.8rem;">▼ Click to expand</span>
-      
-      <div class="demo-content" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid #334155;">
-        
-        <div style="display: grid; gap: 1.5rem; margin-top: 1rem;">
-          
-          <!-- Step 1: Input -->
-          <div>
-            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">1</span>
-              <span style="color: white;">Paste API docs URL</span>
-            </div>
-            <img src="/static/images/api1.png" alt="API input" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
-          </div>
-          
-          <!-- Step 2: Processing -->
-          <div>
-            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">2</span>
-              <span style="color: white;">AI analyzes documentation</span>
-            </div>
-            <img src="/static/images/progress_screen.png" alt="Loading" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
-          </div>
-          
-          <!-- Step 3: Output -->
-          <div>
-            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-              <span style="background: #0cc0df; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">3</span>
-              <span style="color: white;">Understand endpoints & auth</span>
-            </div>
-            <img src="/static/images/api2.png" alt="API results" style="width: 100%; border-radius: 8px; border: 1px solid #334155;">
-          </div>
-          
-          <!-- Try it button -->
-          <div style="text-align: center; margin-top: 1rem;">
-            <a href="/analyze/api" style="display: inline-block; background: #0cc0df; color: white; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none;">
-              Try API Analyzer →
-            </a>
-          </div>
-        </div>
+    <!-- API Docs Card -->
+    <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 2rem 1.5rem;">
+      <div style="font-size: 2.5rem; color: #fbbf24; margin-bottom: 1rem;">
+        <i class="fas fa-cloud"></i>
       </div>
+      <h3 style="color: white; margin: 0 0 0.5rem 0; font-size: 1.3rem;">API Docs</h3>
+      <p style="color: #94a3b8; margin: 0 0 1rem 0; font-size: 0.95rem; line-height: 1.5;">
+        Paste any API documentation URL and get clear explanations of endpoints, auth, and usage.
+      </p>
+      <a href="/analyze/api" style="color: #fbbf24; text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem;">
+        Try it <i class="fas fa-arrow-right" style="font-size: 0.8rem;"></i>
+      </a>
     </div>
     
   </div>
+  
+  <!-- Optional subtle CTA -->
+  <p style="text-align: center; color: #94a3b8; margin-top: 3rem; font-size: 0.9rem;">
+    <i class="fas fa-magic" style="color: #fbbf24; margin-right: 0.25rem;"></i>
+    Try any analyzer above — no account needed. Just paste and go.
+  </p>
 </div>
 
 <script>
@@ -655,62 +604,154 @@ function toggleCard(card) {
     card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }, 100);
 }
+
+document.getElementById('demo-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const code = document.getElementById('demo-code').value;
+    const outputDiv = document.getElementById('demo-output');
+    
+    if (!code.trim()) {
+        alert('Please paste some code first.');
+        return;
+    }
+    
+    // Show loading
+    outputDiv.style.display = 'block';
+    outputDiv.innerHTML = '⏳ Analyzing your code...';
+    
+    try {
+        const response = await fetch('/demo-analyze', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({ code: code })
+        });
+        
+        const data = await response.json();
+        
+        if (data.error) {
+            outputDiv.innerHTML = `<span style="color: #ef4444;">❌ ${data.error}</span>`;
+        } else {
+            outputDiv.innerHTML = `<pre style="margin:0; white-space: pre-wrap;">${data.result}</pre>`;
+            
+            // Add CTA after successful demo
+            outputDiv.innerHTML += `
+                <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #334155; text-align: center;">
+                    <p style="color: #94a3b8; margin-bottom: 0.5rem;">✨ Loved it? Get full access ✨</p>
+                    <a href="/pricing" style="
+                        display: inline-block;
+                        background: #fbbf24;
+                        color: #0f172a;
+                        text-decoration: none;
+                        padding: 0.5rem 1.5rem;
+                        border-radius: 6px;
+                        font-weight: 600;
+                    ">View Plans →</a>
+                </div>
+            `;
+        }
+    } catch (error) {
+        outputDiv.innerHTML = '<span style="color: #ef4444;">❌ Something went wrong. Please try again.</span>';
+    }
+});
 </script>
 
-    <!-- PRICING SECTION -->
+<!-- PRICING SECTION -->
 <section id="pricing" style="padding: 4rem 0; background: #0f172a;">
     <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
         
         <h2 style="text-align: center; color: white; font-size: 2.2rem; margin-bottom: 1rem;">
-            Simple, Fair Pricing
+            Plans for solo devs to full teams
         </h2>
         <p style="text-align: center; color: #94a3b8; margin-bottom: 3rem;">
-            Start for free, upgrade when you need more
+            Try the live demo above — then pick the plan that fits your workflow
         </p>
         
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; max-width: 800px; margin: 0 auto;">
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; max-width: 900px; margin: 0 auto;">
             
-            <!-- Free Tier -->
+            <!-- Pro Tier (Solo Devs) -->
             <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 2rem;">
-                <h3 style="color: white; font-size: 1.5rem; margin-bottom: 1rem;">Free</h3>
-                <div style="font-size: 2.5rem; color: white; margin-bottom: 0.5rem;">$0</div>
-                <p style="color: #94a3b8; margin-bottom: 1.5rem;">Forever free</p>
+                <h3 style="color: white; font-size: 1.5rem; margin-bottom: 1rem;">Pro</h3>
+                <div style="font-size: 2.5rem; color: white; margin-bottom: 0.5rem;">$29<span style="font-size: 1rem; color: #94a3b8;">/mo</span></div>
+                <p style="color: #94a3b8; margin-bottom: 1.5rem;">For solo developers and freelancers</p>
                 
                 <ul style="list-style: none; padding: 0; margin: 0 0 2rem 0;">
-                    <li style="color: #94a3b8; margin-bottom: 0.75rem;">
-                        <i class="fas fa-check" style="color: #0cc0df; margin-right: 0.5rem;"></i>
-                        5 analyses per month
+                    <li style="color: white; margin-bottom: 0.75rem;">
+                        <i class="fas fa-check" style="color: #fbbf24; margin-right: 0.5rem;"></i>
+                        <strong>200 analyses per month</strong>
                     </li>
                     <li style="color: #94a3b8; margin-bottom: 0.75rem;">
-                        <i class="fas fa-check" style="color: #0cc0df; margin-right: 0.5rem;"></i>
-                        All four analyzers
+                        <i class="fas fa-check" style="color: #fbbf24; margin-right: 0.5rem;"></i>
+                        Full GitHub repo breakdowns
                     </li>
                     <li style="color: #94a3b8; margin-bottom: 0.75rem;">
-                        <i class="fas fa-check" style="color: #0cc0df; margin-right: 0.5rem;"></i>
-                        GitHub repos, snippets, security, API docs
+                        <i class="fas fa-check" style="color: #fbbf24; margin-right: 0.5rem;"></i>
+                        Security vulnerability scanning
+                    </li>
+                    <li style="color: #94a3b8; margin-bottom: 0.75rem;">
+                        <i class="fas fa-check" style="color: #fbbf24; margin-right: 0.5rem;"></i>
+                        API documentation analysis
                     </li>
                 </ul>
                 
-                <a href="/start?redirect=/analyze" style="display: block; text-align: center; background: #334155; color: white; padding: 0.75rem; border-radius: 6px; text-decoration: none;">
-                    Start Free
-                </a>
+                <div style="background: rgba(251, 191, 36, 0.1); border: 1px solid #fbbf24; border-radius: 8px; padding: 1rem; text-align: center;">
+                    <p style="color: white; margin: 0 0 0.5rem 0;">🚀 Pro plan launching soon</p>
+                    <form action="/pro-waitlist" method="POST" style="display: flex; gap: 0.5rem;">
+                        <input type="email" name="email" placeholder="Your email" required style="flex: 1; padding: 0.5rem; background: #0f172a; border: 1px solid #334155; border-radius: 4px; color: white;">
+                        <button type="submit" style="background: #fbbf24; color: #0f172a; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; cursor: pointer;">Notify Me</button>
+                    </form>
+                </div>
             </div>
             
-            <!-- Pro Tier -->
-            <div style="background: rgba(12, 192, 223, 0.1); border: 1px solid #0cc0df; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
-    <h2 style="color: white;">🚀 Pro plan launching soon!</h2><p><br> Get notified when billing is ready.</p>
-    <form action="/pro-waitlist" method="POST" style="display: flex; gap: 0.5rem; max-width: 400px; margin: 0 auto;">
-        <input type="email" name="email" placeholder="Your email" required style="flex: 1; padding: 0.5rem;">
-        <button type="submit" style="background: #0cc0df; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px;">Notify Me</button>
-    </form>
-</div>            
+            <!-- Agency Tier (Teams) -->
+            <div style="background: #1e293b; border: 1px solid #fbbf24; border-radius: 12px; padding: 2rem; position: relative;">
+                <div style="position: absolute; top: -10px; right: 20px; background: #fbbf24; color: #0f172a; padding: 0.25rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">
+                    Best for Teams
+                </div>
+                <h3 style="color: white; font-size: 1.5rem; margin-bottom: 1rem;">Agency</h3>
+                <div style="font-size: 2.5rem; color: white; margin-bottom: 0.5rem;">$99<span style="font-size: 1rem; color: #94a3b8;">/mo</span></div>
+                <p style="color: #94a3b8; margin-bottom: 1.5rem;">For dev teams and agencies</p>
+                
+                <ul style="list-style: none; padding: 0; margin: 0 0 2rem 0;">
+                    <li style="color: white; margin-bottom: 0.75rem;">
+                        <i class="fas fa-check" style="color: #fbbf24; margin-right: 0.5rem;"></i>
+                        <strong>1,000 analyses per month</strong>
+                    </li>
+                    <li style="color: white; margin-bottom: 0.75rem;">
+                        <i class="fas fa-check" style="color: #fbbf24; margin-right: 0.5rem;"></i>
+                        <strong>5 team seats included</strong>
+                    </li>
+                    <li style="color: white; margin-bottom: 0.75rem;">
+                        <i class="fas fa-check" style="color: #fbbf24; margin-right: 0.5rem;"></i>
+                        <strong>Unlimited team members ($20/extra seat)</strong>
+                    </li>
+                    <li style="color: #94a3b8; margin-bottom: 0.75rem;">
+                        <i class="fas fa-check" style="color: #fbbf24; margin-right: 0.5rem;"></i>
+                        Everything in Pro
+                    </li>
+                </ul>
+                
+                <div style="background: rgba(251, 191, 36, 0.1); border: 1px solid #fbbf24; border-radius: 8px; padding: 1rem; text-align: center;">
+                    <p style="color: white; margin: 0 0 0.5rem 0;">🏢 Agency plan — coming soon</p>
+                    <form action="/agency-waitlist" method="POST" style="display: flex; gap: 0.5rem;">
+                        <input type="email" name="email" placeholder="Work email" required style="flex: 1; padding: 0.5rem; background: #0f172a; border: 1px solid #334155; border-radius: 4px; color: white;">
+                        <button type="submit" style="background: #fbbf24; color: #0f172a; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; cursor: pointer;">Get Early Access</button>
+                    </form>
+                </div>
+            </div>
+            
         </div>
         
         <!-- Trust Badge -->
-        <div style="text-align: center; margin-top: 2rem;">
+        <div style="text-align: center; margin-top: 3rem;">
             <p style="color: #64748b; font-size: 0.9rem;">
-                <i class="fas fa-shield-alt" style="color: #0cc0df;"></i>
-                30-day refund guarantee • Unused analyses don't roll over • Cancel anytime
+                <i class="fas fa-shield-alt" style="color: #fbbf24; margin-right: 0.25rem;"></i>
+                30-day refund guarantee • Cancel anytime • No hidden fees
+            </p>
+            <p style="color: #94a3b8; font-size: 0.8rem; margin-top: 0.5rem;">
+                All plans include access to GitHub repo analysis, code snippets, security scanning, and API documentation tools.
             </p>
         </div>
         
@@ -790,23 +831,6 @@ function toggleCard(card) {
         
     </div>
 </section>
-
-    <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 3rem 2rem; margin: 3rem auto; max-width: 800px; text-align: center;">
-        <i class="fas fa-lightbulb" style="font-size: 3rem; color: #fbbf24; margin-bottom: 1rem;"></i>
-        <p style="color: white; font-size: 1.5rem; font-weight: 500; margin-bottom: 1rem;">
-            "Legacy code, API docs, security audits —<br>all explained for your skill level."
-        </p>
-        <p style="color: #94a3b8; margin-bottom: 2rem;">
-            Launching soon. Be the first to try CodeDecipher.
-        </p>
-        <form action="/waitlist" method="POST" style="display: flex; max-width: 400px; margin: 0 auto; gap: 0.5rem;">
-            <input type="email" name="email" placeholder="Your email" required
-                style="flex: 1; padding: 0.75rem; background: #0f172a; border: 1px solid #334155; border-radius: 6px; color: white;">
-            <button type="submit" style="background: #0cc0df; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; cursor: pointer;">
-                Notify Me
-            </button>
-        </form>
-    </div>
 
     <!-- CODE FEATURE -->
     <section class="section section-light">
@@ -903,3 +927,4 @@ function toggleDemo(id) {
 </script>
 </body>
 </html>
+
