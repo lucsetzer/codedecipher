@@ -1,6 +1,7 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Form
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
 import os
 from dotenv import load_dotenv
 from routes.analyzers.results import router as results_router
@@ -18,7 +19,10 @@ from routes.legal import router as legal_router
 from routes.waitlist import router as waitlist_router
 from starlette.middleware.sessions import SessionMiddleware
 import secrets
+import hashlib
+import time
 
+demo_requests = {}
 # Load environment variables
 load_dotenv()
 
@@ -95,3 +99,21 @@ async def debug_env():
         "resend_exists": bool(os.getenv("RESEND_API_KEY")),
         "session_exists": bool(os.getenv("SESSION_SECRET")),
     }
+
+@app.post("/demo-analyze")
+async def demo_analyze(request: Request, code: str = Form(...)):
+    client_ip = request.client.host
+    
+    # Rate limiting: 3 requests per hour per IP
+    current_hour = int(time.time() / 3600)
+    ip_key = f"{client_ip}:{current_hour}"
+    
+    if ip_key in demo_requests and demo_requests[ip_key] >= 3:
+        return {"error": "Demo limit reached. Sign up for full access."}
+    
+    demo_requests[ip_key] = demo_requests.get(ip_key, 0) + 1
+    
+    # Your actual analysis logic (simplified for demo)
+    result = analyze_code_demo(code)  # Your existing function, maybe limited
+    
+    return {"result": result}
