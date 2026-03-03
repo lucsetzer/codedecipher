@@ -85,7 +85,7 @@ Please provide:
         return RedirectResponse(url="/login", status_code=303)
 
     # Check tokens
-    if get_user_tokens(user_email) <= 0:
+    if await get_user_tokens(user_email) <= 0:
         return RedirectResponse(url="/insufficient-tokens", status_code=303)
 
     # ... rest of analysis code ...
