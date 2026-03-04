@@ -81,6 +81,27 @@
             .mobile-menu { display: none !important; }
             .desktop-menu { display: flex; }
         }
+
+        /* Desktop grids */
+        @media (min-width: 768px) {
+            .features-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+            
+            .pricing-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+            
+            .footer-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 2rem;
+            }
+        }
     </style>
 </head>
 <body>
