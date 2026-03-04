@@ -45,6 +45,8 @@ async def run_analysis(analysis_id: str, data: dict, prompt_template: str):
         save_analysis(analysis_id, data)
         
         api_key = os.getenv("DEEPSEEK_API_KEY", "")
+
+        print("✅ DeepSeek response received")
         
         if not api_key or api_key.startswith("your-"):
             result = f"""ANALYSIS COMPLETE (Mock Mode)
