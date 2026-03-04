@@ -417,29 +417,30 @@
 </section>
 
 <script>
-function submitRepo() {
-    const url = document.getElementById('repo_url').value;
-    console.log('URL:', url);
-    if (!url) {
-        alert('Please enter a GitHub URL');
-        return;
+    alert('Script loaded');
+    function submitRepo() {
+        const url = document.getElementById('repo_url').value;
+        console.log('URL:', url);
+        if (!url) {
+            alert('Please enter a GitHub URL');
+            return;
+        }
+        
+        // Create and submit form
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/process-github';
+        
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'repo_url';
+        input.value = url;
+        
+        form.appendChild(input);
+        document.body.appendChild(form);
+        console.log('Submitting...');
+        form.submit();
     }
-    
-    // Create and submit form
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = '/process-github';
-    
-    const input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = 'repo_url';
-    input.value = url;
-    
-    form.appendChild(input);
-    document.body.appendChild(form);
-    console.log('Submitting...');
-    form.submit();
-}
 
 console.log('submitRepo called');
 
