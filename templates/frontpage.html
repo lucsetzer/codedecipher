@@ -400,6 +400,11 @@
                 placeholder="https://github.com/username/repository"
                 required
             >
+            <input
+                type="hidden"
+                name="mobile"
+                value="true"
+            >
             <button type="submit">Analyze Repo</button>
         </form>
     </div>    
@@ -857,10 +862,6 @@ document.getElementById('demo-form').addEventListener('submit', async (e) => {
         <!-- Trust badges and copyright -->
         <div style="border-top: 1px solid #334155; padding-top: 2rem;">
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-                <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
-                    <span style="color: #94a3b8;"><i class="fas fa-shield-alt" style="color: #0cc0df;"></i> Auto-deleted in 1 hour</span>
-                    <span style="color: #94a3b8;"><i class="fas fa-coins" style="color: #fbbf24;"></i> 5 free tokens/month</span>
-                </div>
                 <p style="color: #64748b; font-size: 0.9rem;">© 2025 CodeDecipher. All rights reserved.</p>
             </div>
         </div>
