@@ -419,6 +419,7 @@
 <script>
 function submitRepo() {
     const url = document.getElementById('repo_url').value;
+    console.log('URL:', url);
     if (!url) {
         alert('Please enter a GitHub URL');
         return;
@@ -436,8 +437,11 @@ function submitRepo() {
     
     form.appendChild(input);
     document.body.appendChild(form);
+    console.log('Submitting...');
     form.submit();
 }
+
+console.log('submitRepo called');
 
 // Fix keyboard overlap on mobile
 document.getElementById('repo_url').addEventListener('focus', function() {
