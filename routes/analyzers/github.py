@@ -26,24 +26,64 @@ async def process_github(
     request: Request,
     repo_url: str = Form(...),
     branch: str = Form("main"),
-    include_patterns: str = Form("*.py,*.js,*.json,*.md,*.yml"),
+    include_patterns: str = Form("*.py,*.js,*.json,*.md,*.yml,*.html,*.css"),
     specific_questions: str = Form(""),
     level: str = Form("professional"),
     doc_type: str = Form("github")
 ):
-    """Process GitHub repository analysis"""
+    print("🔥🔥🔥 GITHUB ROUTE HIT 🔥🔥🔥")
+    print(f"📦 Repo URL: {repo_url}")
     
-    # 1. Get user email FIRST
     user_email = request.session.get("user_email")
+    is_demo = False
+
+    # If not logged in, set up demo user
     if not user_email:
-        return RedirectResponse("/login", status_code=303)
+        client_ip = request.client.host
+        user_email = f"demo_{client_ip}"
+        is_demo = True
+        # ... demo tracking logic ...
+        
+    # Now user_email is always set
+    # Only check tokens for real users
+    if not is_demo:
+        from shared.auth import get_user_tokens
+        if await get_user_tokens(user_email) <= 0:
+            return RedirectResponse("/insufficient-tokens", status_code=303)
+
+        from shared.auth import get_db_connection
+        
+        conn = await get_db_connection(statement_cache_size=0)
+        
+        # Check if this IP has already used demo
+        result = await conn.fetchrow(
+            "SELECT used FROM demo_usage WHERE identifier = $1",
+            client_ip
+        )
+        
+        if result and result['used']:
+            # Already used demo — allow it, but mark as demo
+            is_demo = True
+            user_email = f"demo_{client_ip}"
+            print(f"🎁 Demo repeat for IP: {client_ip}")
+        else:
+            # First time — allow demo and mark used
+            is_demo = True
+            user_email = f"demo_{client_ip}"
+            
+            await conn.execute(
+                """
+                INSERT INTO demo_usage (identifier, used)
+                VALUES ($1, TRUE)
+                ON CONFLICT (identifier) DO UPDATE SET used = TRUE, updated_at = NOW()
+                """,
+                client_ip
+            )
+            print(f"🎁 First demo for IP: {client_ip}")
+        
+        await conn.close()
     
-    # 2. CHECK TOKENS - RIGHT HERE
-    from shared.auth import get_user_tokens
-    if await get_user_tokens(user_email) <= 0:
-        return RedirectResponse("/insufficient-tokens", status_code=303)
-    
-    # 3. NOW create analysis_id and proceed
+    # Create analysis
     analysis_id = str(uuid.uuid4())
     
     # Build prompt
@@ -64,7 +104,7 @@ Please provide:
     
     # Store initial data
     data = {
-        "user_email": request.session.get("user_email"),
+        "user_email": user_email,
         "feature": "github",
         "repo_url": repo_url,
         "branch": branch,
@@ -74,26 +114,10 @@ Please provide:
         "status": "processing",
         "progress": 0.1,
         "message": "Cloning repository...",
-        "created_at": asyncio.get_event_loop().time()
+        "created_at": asyncio.get_event_loop().time(),
+        "is_demo": is_demo
     }
     
-    from shared.auth import get_user_tokens, deduct_token
-
-    # Get user email from session (assuming you have this)
-    user_email = request.session.get("user_email")
-    if not user_email:
-        return RedirectResponse(url="/login", status_code=303)
-
-    # Check tokens
-    if get_user_tokens(user_email) <= 0:
-        return RedirectResponse(url="/insufficient-tokens", status_code=303)
-
-    # ... rest of analysis code ...
-
-    # After successful completion, deduct token
-    if data["status"] == "complete":
-        deduct_token(user_email)
-
     # Save to queue
     save_analysis(analysis_id, data)
     

@@ -30,6 +30,7 @@ async def show_result(analysis_id: str, request: Request):
     return templates.TemplateResponse("result.html", {
         "request": request,
         "result_text": data.get("result", "No result available"),
+        "analysis_data": data,  # ← add this line
         "analysis_type": data.get("feature", "Code Analysis").title(),
         "analysis_date": analysis_date
     })

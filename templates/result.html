@@ -168,6 +168,8 @@
     }
 </style>
 
+
+
 <div class="result-container">
     <div class="result-header">
         <i class="fas fa-lightbulb"></i>
@@ -192,13 +194,24 @@
         </div>
     </div>
     
+    
+
     <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
         <a href="/analyze/{{ feature }}" class="btn-secondary">
             <i class="fas fa-plus"></i> New {{ feature }} Analysis
         </a>
     </div>
 </div>
-
+{% if analysis_data.get('is_demo') %}
+    <div style="background: rgba(251, 191, 36, 0.1); border: 1px solid #fbbf24; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; text-align: center;">
+        <h3 style="color: #fbbf24; margin-top: 0;">✨ You've used your free analysis</h3>
+        <p style="color: white;">Sign up for unlimited access and unlock all features:</p>
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1rem;">
+            <a href="/pricing" style="background: #fbbf24; color: #0f172a; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 600;">View Plans</a>
+            <a href="/login" style="background: transparent; color: white; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none; border: 1px solid #334155;">Log In</a>
+        </div>
+    </div>
+    {% endif %}
 <script>
 function copyResult(button) {
     const element = document.querySelector('.result-content');

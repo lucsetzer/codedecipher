@@ -4,8 +4,9 @@ from datetime import datetime
 
 DB_PATH = os.getenv("DATABASE_URL")
 
-async def get_db_connection():
-    """Get a database connection"""
+async def get_db_connection(statement_cache_size=None):
+    if statement_cache_size is not None:
+        return await asyncpg.connect(DB_PATH, statement_cache_size=statement_cache_size)
     return await asyncpg.connect(DB_PATH)
 
 async def store_magic_token(email: str, token: str) -> bool:
@@ -81,6 +82,10 @@ async def verify_magic_link(token: str, mark_used: bool = True):
         return None
 
 async def get_user_tokens(email: str) -> int:
+    # Demo users get fake tokens
+    if email.startswith("demo_"):
+        return 5
+    
     """Get user's remaining tokens, resetting monthly if needed."""
     conn = await get_db_connection()
     
@@ -157,9 +162,15 @@ async def deduct_token(email: str) -> bool:
         return False
 
 async def send_magic_link(email: str, token: str):
+    user_agent = request.headers.get('User-Agent', 'unknown')
+    print(f"📱 Mobile? {'iOS' if 'iPhone' in user_agent else 'Android' if 'Android' in user_agent else 'Desktop'} - {email}")
+    
+
     """Send magic link email via Resend"""
     magic_link = f"https://codedecipher.app/auth?token={token}"
     
+    print(f"🔗 Magic link for {email}: https://codedecipher.app/auth?token={token}")
+
     try:
         import resend
         resend.api_key = os.getenv("RESEND_API_KEY")
