@@ -379,6 +379,7 @@
     </nav>
 
     <!-- HERO with LIVE DEMO -->
+<!-- Hero Section with working mobile form -->
 <section class="section section-dark hero" style="position: relative; overflow: hidden; padding: 2rem 0;">
   
     <!-- Content on top of video -->
@@ -396,16 +397,34 @@
             Paste any GitHub URL, code snippet, security scan, or API docs — Finally understand that codebase you inherited.
         </p>
         
-    <!-- Hero GitHub Form -->
-    <div class="hero-form">
-        <form id="mobile-form" onsubmit="return false;">
-    <input type="url" id="repo_url" placeholder="https://github.com/..." required>
-    <button type="button" onclick="submitForm()">Analyze Repo</button>
-</form>
+        <!-- Hero GitHub Form (mobile-friendly) -->
+        <div class="hero-form">
+            <input 
+                type="url" 
+                id="repo_url" 
+                placeholder="https://github.com/username/repository"
+                required
+                style="width: 100%; padding: 1rem; margin-bottom: 0.5rem; background: #1e293b; border: 1px solid #334155; border-radius: 8px; color: white; font-size: 16px;"
+            >
+            <button 
+                onclick="submitRepo()"
+                style="width: 100%; padding: 1rem; background: #fbbf24; color: #0f172a; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer;"
+            >
+                Analyze Repo
+            </button>
+        </div>
+    </div>
+</section>
 
 <script>
-function submitForm() {
+function submitRepo() {
     const url = document.getElementById('repo_url').value;
+    if (!url) {
+        alert('Please enter a GitHub URL');
+        return;
+    }
+    
+    // Create and submit form
     const form = document.createElement('form');
     form.method = 'POST';
     form.action = '/process-github';
@@ -419,10 +438,15 @@ function submitForm() {
     document.body.appendChild(form);
     form.submit();
 }
+
+// Fix keyboard overlap on mobile
+document.getElementById('repo_url').addEventListener('focus', function() {
+    setTimeout(() => {
+        this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        window.scrollBy(0, -50);
+    }, 300);
+});
 </script>
-    </div>    
-    </div>
-</section>
     
 
     <!-- PRIVACY & SECURITY BANNER - Moved to top, using brand yellow -->
