@@ -393,20 +393,28 @@
         
     <!-- Hero GitHub Form -->
     <div class="hero-form">
-        <form action="/process-github" method="POST" id="mobille-form">
-            <input 
-                type="url" 
-                name="repo_url" 
-                placeholder="https://github.com/username/repository"
-                required
-            >
-            <input
-                type="hidden"
-                name="mobile"
-                value="true"
-            >
-            <button type="submit">Analyze Repo</button>
-        </form>
+        <form id="mobile-form" onsubmit="return false;">
+    <input type="url" id="repo_url" placeholder="https://github.com/..." required>
+    <button type="button" onclick="submitForm()">Analyze Repo</button>
+</form>
+
+<script>
+function submitForm() {
+    const url = document.getElementById('repo_url').value;
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/process-github';
+    
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'repo_url';
+    input.value = url;
+    
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
+}
+</script>
     </div>    
     </div>
 </section>
