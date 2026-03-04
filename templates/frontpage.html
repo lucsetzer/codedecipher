@@ -323,6 +323,39 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        .hero-form {
+            max-width: 600px;
+            margin: 2rem auto 0;
+            padding: 0 1rem;
+        }
+
+        .hero-form input {
+            width: 100%;
+            padding: 1rem;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-form button {
+            width: 100%;
+            padding: 1rem;
+            background: #0cc0df;
+            color: #0f172a;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .hero-form button:hover {
+            background: #0cc0df;
+        }
     </style>
 </head>
 <body>
@@ -358,87 +391,18 @@
             Paste any GitHub URL, code snippet, security scan, or API docs — Finally understand that codebase you inherited.
         </p>
         
-        <!-- LIVE DEMO BOX -->
-        <div style="
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
-            background: rgba(30, 41, 59, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            border: 1px solid #334155;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        ">
-            <form id="demo-form">
-                <textarea 
-                    name="code" 
-                    id="demo-code" 
-                    placeholder='Paste your code here. Example:
-function hello() {
-    console.log("Hello world");
-}' 
-                    rows="6"
-                    style="
-                        width: 100%;
-                        padding: 1rem;
-                        background: #1e293b;
-                        color: #e2e8f0;
-                        border: 1px solid #475569;
-                        border-radius: 8px;
-                        font-family: monospace;
-                        font-size: 0.9rem;
-                        margin-bottom: 1rem;
-                        resize: vertical;
-                    "
-                    required
-                ></textarea>
-                
-                <button 
-                    type="submit" 
-                    style="
-                        background: #fbbf24;
-                        color: #0f172a;
-                        border: none;
-                        padding: 0.75rem 2rem;
-                        font-size: 1.1rem;
-                        font-weight: 600;
-                        border-radius: 8px;
-                        cursor: pointer;
-                        transition: background 0.2s;
-                        width: 100%;
-                    "
-                    onmouseover="this.style.background='#f59e0b'"
-                    onmouseout="this.style.background='#fbbf24'"
-                >
-                    Analyze Demo
-                </button>
-            </form>
-            
-            <!-- Demo output area (hidden initially) -->
-            <div id="demo-output" style="
-                margin-top: 1.5rem;
-                padding: 1rem;
-                background: #0f172a;
-                border-radius: 8px;
-                border: 1px solid #334155;
-                text-align: left;
-                font-family: monospace;
-                color: #e2e8f0;
-                display: none;
-                max-height: 300px;
-                overflow-y: auto;
-            "></div>
-            
-            <p style="
-                color: #94a3b8;
-                font-size: 0.85rem;
-                margin-top: 1rem;
-                text-align: center;
-            ">
-                <i class="fas fa-shield-alt" style="margin-right: 0.25rem;"></i>
-                No signup. No credit card. Just try it. (3 demos per hour)
-            </p>
-        </div>
+    <!-- Hero GitHub Form -->
+    <div class="hero-form">
+        <form action="/process-github" method="POST">
+            <input 
+                type="url" 
+                name="repo_url" 
+                placeholder="https://github.com/username/repository"
+                required
+            >
+            <button type="submit">Analyze Repo</button>
+        </form>
+    </div>    
     </div>
 </section>
     
@@ -832,6 +796,27 @@ document.getElementById('demo-form').addEventListener('submit', async (e) => {
     </div>
 </section>
 
+    <!-- CODE FEATURE -->
+    <section class="section section-light">
+        <div class="container">
+            <div class="code-feature">
+                <h2 style="color: white; margin-bottom: 1rem;">
+                    <i class="fas fa-star"></i> Our Secret Weapon: Codebase Analysis
+                </h2>
+                <p style="color: #e2e8f0; font-size: 1.2rem;">
+                    Built for developers who've ever stared at a codebase and felt completely lost. Upload any repository and get a beginner-friendly walkthrough — no senior dev required.
+                </p>
+                <div style="background: rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                    <code style="color: #7dd3fc; font-size: 1.1rem;">
+                        $ Input: Python Flask app<br>
+                        $ Output: "This is a web application with 3 main routes..."<br>
+                        $ Learning: "Start by examining app.py, then look at auth..."
+                    </code>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- FOOTER -->
     <footer class="section section-dark" style="background: #0f172a; border-top: 1px solid #334155; padding: 3rem 0;">
     <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
@@ -884,7 +869,7 @@ document.getElementById('demo-form').addEventListener('submit', async (e) => {
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
                 <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
                     <span style="color: #94a3b8;"><i class="fas fa-shield-alt" style="color: #0cc0df;"></i> Auto-deleted in 1 hour</span>
-                    <span style="color: #94a3b8;"><i class="fas fa-coins" style="color: #fbbf24;"></i>No credit card needed to try</span>
+                    <span style="color: #94a3b8;"><i class="fas fa-coins" style="color: #fbbf24;"></i> 5 free tokens/month</span>
                 </div>
                 <p style="color: #64748b; font-size: 0.9rem;">© 2025 CodeDecipher. All rights reserved.</p>
             </div>
