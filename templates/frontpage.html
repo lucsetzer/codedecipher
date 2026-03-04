@@ -393,7 +393,7 @@
         
     <!-- Hero GitHub Form -->
     <div class="hero-form">
-        <form action="/process-github" method="POST">
+        <form action="/process-github" method="POST" id="mobille-form">
             <input 
                 type="url" 
                 name="repo_url" 
@@ -879,6 +879,9 @@ function toggleDemo(id) {
     demo.style.display = "none";
   }
 }
+document.getElementById('mobile-form').addEventListener('submit', function(e) {
+    // Let it submit normally — this just ensures method is POST
+});
 </script>
 </body>
 </html>
