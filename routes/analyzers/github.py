@@ -118,6 +118,26 @@ Please provide:
         "is_demo": is_demo
     }
     
+
+
+    from shared.auth import get_user_tokens, deduct_token
+
+    # Get user email from session (assuming you have this)
+    user_email = request.session.get("user_email")
+    if not user_email:
+        return RedirectResponse(url="/login", status_code=303)
+
+    # Check tokens
+    if await get_user_tokens(user_email) <= 0:
+        return RedirectResponse(url="/insufficient-tokens", status_code=303)
+
+    # ... rest of analysis code ...
+
+    # After successful completion, deduct token
+    if data["status"] == "complete":
+        deduct_token(user_email)
+
+
     # Save to queue
     save_analysis(analysis_id, data)
     

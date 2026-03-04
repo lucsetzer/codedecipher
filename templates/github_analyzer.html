@@ -305,8 +305,20 @@
     
     // Update UI
     document.querySelectorAll('.level-card').forEach(card => {
-        card.classList.remove('selected');
+    card.addEventListener('click', function() {
+        // Remove selected class from all
+        document.querySelectorAll('.level-card').forEach(c => {
+            c.classList.remove('selected');
+        });
+        
+        // Add selected class to clicked
+        this.classList.add('selected');
+        
+        // Update hidden input
+        const level = this.dataset.level;
+        document.getElementById('level').value = level;
     });
+});
     
     const selectedCard = document.querySelector(`.level-card[data-level="${level}"]`);
     if (selectedCard) {
