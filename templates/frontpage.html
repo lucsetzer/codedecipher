@@ -359,13 +359,15 @@
       </p>
 
       <div class="hero-form anim d5">
-        <div class="input-wrap">
-          <label for="repo-url" class="sr-only">GitHub repository URL</label>
-          <input type="url" id="repo-url" class="hero-input" placeholder="https://github.com/username/repo">
-          <button class="btn-primary" onclick="submitRepo()">
-            <i class="fas fa-search"></i> Analyze repo
-          </button>
-        </div>
+        <form action="/process-github" method="POST" id="repo-form">
+          <div class="input-wrap">
+            <label for="repo-url" class="sr-only">GitHub repository URL</label>
+            <input type="url" name="repo_url" id="repo-url" class="hero-input" placeholder="https://github.com/username/repo" required>
+            <button type="submit" class="btn-primary">
+              <i class="fas fa-search"></i> Analyze repo
+            </button>
+          </div>
+        </form>
         <p class="hero-reassure">
           <i class="fas fa-lock"></i> Code deleted in 1 hour
           <span class="sep">·</span> No account needed
