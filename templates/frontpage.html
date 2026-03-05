@@ -148,19 +148,18 @@ function toggleMenu() {
         </p>
         
         <div style="max-width: 500px; margin: 0 auto;">
-            <input 
-                type="url" 
-                name="repo-url"
-                id="repo-url"
-                placeholder="https://github.com/username/repository"
-                style="width: 100%; padding: 1rem; margin-bottom: 0.75rem; background: #1e293b; border: 1px solid #334155; border-radius: 8px; color: white; font-size: 16px;"
-            >
-            <button 
-                onclick="submitRepo()"
-                style="width: 100%; padding: 1rem; background: #0cc0df; color: #0f172a; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer;"
-            >
-                Analyze Repo
-            </button>
+            <form action="/process-github" method="POST">
+                <input 
+                    type="url" 
+                    name="repo_url"
+                    placeholder="https://github.com/username/repository"
+                    style="width: 100%; padding: 1rem; margin-bottom: 0.75rem; background: #1e293b; border: 1px solid #334155; border-radius: 8px; color: white; font-size: 16px;"
+                    required
+                >
+                <button type="submit" style="width: 100%; padding: 1rem; background: #fbbf24; color: #0f172a; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer;">
+                    Analyze Repo
+                </button>
+            </form>
         </div>
     </div>
 </section>
