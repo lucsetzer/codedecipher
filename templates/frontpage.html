@@ -516,6 +516,20 @@
     hidden.type = 'hidden'; hidden.name = 'repo_url'; hidden.value = url;
     form.appendChild(hidden); document.body.appendChild(form); form.submit();
   }
+
+  function validateRepoForm() {
+    const input = document.getElementById('repo-url');
+    const url = input.value.trim();
+    
+    // Basic GitHub URL check
+    if (!url.startsWith('https://github.com/')) {
+      alert('Please enter a valid GitHub URL (https://github.com/...)');
+      input.focus();
+      return false; // stops form submission
+    }
+    
+    return true; // allows form to submit
+  }
 </script>
 
 </body>
