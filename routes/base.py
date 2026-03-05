@@ -54,7 +54,7 @@ This is a placeholder response. Add your DeepSeek API key to .env for real analy
                         max_tokens=1500,
                         temperature=0.3
                     ),
-                    timeout=45.0
+                    timeout=120.0
                 )
                 print(f"✅ AI responded successfully")
                 result = response.choices[0].message.content
