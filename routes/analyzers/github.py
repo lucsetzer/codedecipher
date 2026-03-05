@@ -39,10 +39,7 @@ async def process_github(
     
     # If not logged in, set up demo user
     if not user_email:
-        client_ip = request.client.host
-        user_email = f"demo_{client_ip}"
-        is_demo = True
-        print(f"🎁 Demo mode for IP: {client_ip}")
+        return RedirectResponse("/login", status_code=303)
     
     # 2. CHECK TOKENS - RIGHT HERE
     from shared.auth import get_user_tokens
