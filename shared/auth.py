@@ -81,14 +81,17 @@ async def verify_magic_link(token: str, mark_used: bool = True):
         return None
 
 async def get_user_tokens(email: str) -> int:
-    """Get user's remaining tokens, resetting monthly if needed."""
+    # Demo users get fake tokens and are never stored
+    if email.startswith("demo_"):
+        return 3
+
     conn = await get_db_connection()
     
     # Create users table if not exists
     await conn.execute('''
         CREATE TABLE IF NOT EXISTS users (
             email TEXT PRIMARY KEY,
-            tokens INTEGER DEFAULT 5,
+            tokens INTEGER DEFAULT 3,
             last_token_reset TEXT
         )
     ''')
@@ -118,7 +121,7 @@ async def get_user_tokens(email: str) -> int:
         await conn.execute('''
             UPDATE users SET tokens = $1, last_token_reset = $2 WHERE email = $3
         ''', tokens, current_month, email)
-        print(f"🔄 Reset tokens for {email} to 5 for new month {current_month}")
+        print(f"🔄 Reset tokens for {email} to 3 for new month {current_month}")
     
     await conn.close()
     return tokens
