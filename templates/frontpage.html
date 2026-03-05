@@ -359,7 +359,7 @@
       </p>
 
       <div class="hero-form anim d5">
-        <form action="/process-github" method="POST" id="repo-form">
+        <form action="/process-github" method="POST" id="repo-form" onsubmit-"return validateRepoForm()">
           <div class="input-wrap">
             <label for="repo-url" class="sr-only">GitHub repository URL</label>
             <input type="text" name="repo_url" id="repo-url" class="hero-input" placeholder="https://github.com/username/repo" required>
