@@ -102,19 +102,19 @@ async def get_user_tokens(email: str) -> int:
     current_month = datetime.now().strftime('%Y-%m')
     
     if not result:
-        # New user: give 5 tokens
+        # New user: give 3 tokens
         await conn.execute('''
             INSERT INTO users (email, tokens, last_token_reset)
             VALUES ($1, $2, $3)
-        ''', email, 5, current_month)
+        ''', email, 3, current_month)
         await conn.close()
-        return 5
+        return 3
     
     tokens, last_reset_month = result['tokens'], result['last_token_reset']
     
     # If the month has changed, reset tokens
     if last_reset_month != current_month:
-        tokens = 5
+        tokens = 3
         await conn.execute('''
             UPDATE users SET tokens = $1, last_token_reset = $2 WHERE email = $3
         ''', tokens, current_month, email)
@@ -134,7 +134,7 @@ async def deduct_token(email: str) -> bool:
             INSERT INTO users (email, tokens, last_token_reset)
             VALUES ($1, $2, $3)
             ON CONFLICT (email) DO NOTHING
-        ''', email, 5, current_month)
+        ''', email, 3, current_month)
         
         # Deduct token
         result = await conn.execute('''
