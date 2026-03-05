@@ -1,353 +1,475 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>CodeDecipher — Understand any codebase</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: white; line-height: 1.5; }
-        a { text-decoration: none; color: inherit; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
-        
-        /* Mobile Navbar */
-        .navbar {
-            background: #0f172a;
-            padding: 1rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid #334155;
-        }
-        
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .logo {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: white;
-        }
-        
-        .hamburger {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.5rem;
-        }
-        
-        .mobile-menu {
-            display: none;
-            flex-direction: column;
-            gap: 1rem;
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid #334155;
-        }
-        
-        .mobile-menu a {
-            color: #94a3b8;
-            padding: 0.5rem 0;
-            font-size: 1.1rem;
-        }
-        
-        .mobile-menu a:hover {
-            color: white;
-        }
-        
-        .desktop-menu {
-            display: none;
-            gap: 2rem;
-        }
-        
-        .desktop-menu a {
-            color: #94a3b8;
-        }
-        
-        .desktop-menu a:hover {
-            color: white;
-        }
-        
-        @media (min-width: 768px) {
-            .hamburger { display: none; }
-            .mobile-menu { display: none !important; }
-            .desktop-menu { display: flex; }
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="description" content="CodeDecipher — Paste a GitHub URL and get a plain‑English breakdown of any codebase in under 60 seconds. Free to start, no credit card required.">
+  <title>CodeDecipher — Understand any codebase in minutes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --bg:        #080e1a;
+      --surface:   #0f1829;
+      --surface2:  #162035;
+      --border:    #1e2d45;
+      --accent:    #0cc0df;
+      --accent-bg: rgba(12,192,223,0.10);
+      --green:     #4ade80;
+      --green-bg:  rgba(74,222,128,0.08);
+      --green-bdr: rgba(74,222,128,0.22);
+      --yellow:    #fbbf24;
+      --red:       #f87171;
+      --text:      #e8edf5;
+      --muted:     #6b7e99;
+      --muted2:    #98a8bc;
+      --mono:      'Space Mono', monospace;
+      --sans:      'DM Sans', sans-serif;
+      --r:         10px;
+      --r-sm:      6px;
+      --focus:     0 0 0 3px rgba(12,192,223,0.55);
+    }
 
-        /* Desktop grids */
-        @media (min-width: 768px) {
-            .features-grid {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1.5rem;
-            }
-            
-            .pricing-grid {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1.5rem;
-            }
-            
-            .footer-grid {
-                display: grid;
-                grid-template-columns: repeat(4, 1fr);
-                gap: 2rem;
-            }
-        }
-    </style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 1rem;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    body::before {
+      content:''; position:fixed; inset:0;
+      background-image:
+        linear-gradient(rgba(12,192,223,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(12,192,223,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events:none; z-index:0;
+    }
+    a { color:inherit; text-decoration:none; }
+
+    .skip-link {
+      position:absolute; top:-100%; left:1rem;
+      background:var(--accent); color:#080e1a;
+      font-weight:700; font-family:var(--mono); font-size:0.85rem;
+      padding:0.6rem 1.2rem; border-radius:var(--r-sm);
+      z-index:9999; transition:top 0.15s;
+    }
+    .skip-link:focus { top:1rem; }
+    :focus-visible { outline:none; box-shadow:var(--focus); border-radius:var(--r-sm); }
+    .sr-only {
+      position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+      overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+    }
+    @media (prefers-reduced-motion:reduce) {
+      *, *::before, *::after { animation-duration:0.01ms !important; transition-duration:0.01ms !important; }
+    }
+
+    .container { width:100%; max-width:1100px; margin-inline:auto; padding-inline:1.25rem; position:relative; z-index:1; }
+
+    /* ---- NAV (larger logo & icon) ---- */
+    .navbar {
+      position:sticky; top:0; z-index:200;
+      background:rgba(8,14,26,0.92);
+      backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+      border-bottom:1px solid var(--border);
+    }
+    .nav-inner {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0.9rem 1.25rem; max-width:1100px; margin-inline:auto;
+    }
+    .logo { font-family:var(--mono); font-size:1.3rem; font-weight:700; display:flex; align-items:center; gap:0.45rem; letter-spacing:-0.02em; }
+    .logo i { font-size:1.4rem; color:var(--yellow); }
+    .nav-toggle {
+      display:flex; align-items:center; justify-content:center;
+      background:none; border:1px solid var(--border); color:var(--text);
+      width:40px; height:40px; border-radius:var(--r-sm); cursor:pointer; font-size:1rem;
+      transition:border-color 0.2s, background 0.2s;
+    }
+    .nav-toggle:hover, .nav-toggle[aria-expanded="true"] { border-color:var(--accent); background:var(--accent-bg); }
+    .nav-drawer {
+      display:none; flex-direction:column; gap:0;
+      border-top:1px solid var(--border); background:var(--surface); padding:0.5rem 1.25rem 1rem;
+    }
+    .nav-drawer.open { display:flex; }
+    .nav-drawer a { color:var(--muted2); padding:0.65rem 0; font-size:1rem; border-bottom:1px solid var(--border); transition:color 0.2s; }
+    .nav-drawer a:last-child { border-bottom:none; }
+    .nav-drawer a:hover { color:var(--text); }
+    .nav-drawer .cta {
+      margin-top:0.75rem; display:block; text-align:center;
+      background:var(--accent); color:#080e1a; padding:0.7rem; border-radius:var(--r-sm);
+      font-weight:700; font-family:var(--mono); font-size:0.875rem; border-bottom:none; transition:opacity 0.2s;
+    }
+    .nav-drawer .cta:hover { opacity:0.88; color:#080e1a; }
+
+    @media (min-width:768px) {
+      .nav-toggle { display:none; }
+      .nav-drawer { display:flex !important; flex-direction:row; align-items:center; gap:2rem; border-top:none; background:transparent; padding:0; }
+      .nav-drawer a { border-bottom:none; padding:0; font-size:0.9rem; }
+      .nav-drawer .cta { margin-top:0; padding:0.45rem 1.1rem; }
+    }
+
+    /* ---- HERO (your language) ---- */
+    .hero { padding:3.5rem 1.25rem 3rem; text-align:center; }
+    .badge {
+      display:inline-flex; align-items:center; gap:0.4rem;
+      background:var(--accent-bg); border:1px solid rgba(12,192,223,0.22);
+      border-radius:100px; padding:0.35rem 0.9rem;
+      font-family:var(--mono); font-size:0.72rem; color:var(--accent);
+      letter-spacing:0.06em; text-transform:uppercase; margin-bottom:1.75rem;
+    }
+    .hero h1 { font-family:var(--mono); font-size:1.85rem; font-weight:700; line-height:1.18; letter-spacing:-0.03em; margin-bottom:1.1rem; }
+    .hero h1 em { font-style:normal; color:var(--accent); }
+    .hero-sub { color:var(--muted2); font-size:1rem; font-weight:300; max-width:520px; margin-inline:auto; margin-bottom:1.75rem; }
+    .free-pill {
+      display:inline-flex; align-items:center; gap:0.45rem;
+      background:var(--green-bg); border:1px solid var(--green-bdr);
+      border-radius:100px; padding:0.35rem 1rem;
+      color:var(--green); font-size:0.85rem; font-weight:500; margin-bottom:1.75rem;
+    }
+    .hero-form { max-width:480px; margin-inline:auto; }
+    .input-wrap { display:flex; flex-direction:column; gap:0.65rem; }
+    .hero-input {
+      width:100%; padding:0.9rem 1rem;
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:var(--r); color:var(--text);
+      font-family:var(--mono); font-size:0.875rem; outline:none;
+      transition:border-color 0.2s, box-shadow 0.2s;
+    }
+    .hero-input:focus { border-color:var(--accent); box-shadow:var(--focus); }
+    .btn-primary {
+      width:100%; padding:0.9rem 1rem;
+      background:var(--accent); color:#080e1a; border:none; border-radius:var(--r);
+      font-family:var(--mono); font-size:0.95rem; font-weight:700; cursor:pointer;
+      display:flex; align-items:center; justify-content:center; gap:0.5rem;
+      transition:opacity 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover { opacity:0.88; }
+    .btn-primary:active { transform:scale(0.99); }
+    .hero-reassure {
+      color:var(--muted); font-size:0.78rem; margin-top:0.9rem;
+      display:flex; align-items:center; justify-content:center; gap:0.35rem; flex-wrap:wrap;
+    }
+    .hero-reassure i { color:var(--accent); font-size:0.7rem; }
+    .sep { color:var(--border); }
+
+    @media (min-width:768px) {
+      .hero { padding:5.5rem 1.5rem 4.5rem; }
+      .hero h1 { font-size:3rem; }
+      .hero-sub { font-size:1.1rem; }
+      .input-wrap { flex-direction:row; }
+      .btn-primary { width:auto; white-space:nowrap; }
+    }
+
+    /* ---- TRUST BAR ---- */
+    .trust-bar {
+      border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+      background:var(--surface); padding:1rem 1.25rem;
+    }
+    .trust-bar-inner { display:flex; flex-direction:column; gap:0.65rem; max-width:1100px; margin-inline:auto; }
+    .trust-item { display:flex; align-items:center; gap:0.55rem; color:var(--muted2); font-size:0.875rem; }
+    .trust-item i { color:var(--accent); width:16px; text-align:center; flex-shrink:0; }
+    @media (min-width:560px) { .trust-bar-inner { flex-direction:row; flex-wrap:wrap; justify-content:center; gap:1.5rem; } }
+    @media (min-width:768px) { .trust-bar-inner { gap:2.5rem; } }
+
+    /* ---- SECTION BASE ---- */
+    .section { padding:3.5rem 1.25rem; }
+    .section-alt { background:var(--surface); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+    .eyebrow { font-family:var(--mono); font-size:0.7rem; letter-spacing:0.12em; color:var(--accent); text-transform:uppercase; margin-bottom:0.6rem; }
+    .sec-title { font-family:var(--mono); font-size:1.5rem; font-weight:700; letter-spacing:-0.025em; margin-bottom:0.6rem; }
+    .sec-sub { color:var(--muted2); font-size:0.95rem; max-width:500px; margin-bottom:2rem; }
+    @media (min-width:768px) { .section { padding:5rem 1.5rem; } .sec-title { font-size:2rem; } }
+
+    /* ---- REPORT PREVIEW (honest concept) ---- */
+    .report-wrap {
+      max-width:780px;
+      background:var(--surface2);
+      border:1px solid var(--border);
+      border-radius:var(--r);
+      overflow:hidden;
+    }
+    .report-bar {
+      background:var(--surface);
+      border-bottom:1px solid var(--border);
+      padding:0.65rem 1rem;
+      display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.5rem;
+    }
+    .report-bar-left { display:flex; align-items:center; gap:0.45rem; }
+    .report-bar-right { display:flex; align-items:center; gap:0.75rem; }
+    .report-label { font-family:var(--mono); font-size:0.7rem; color:var(--muted); margin-left:0.4rem; }
+    .report-body {
+      padding:1.5rem 1.5rem 2rem;
+      max-height:520px;
+      overflow-y:auto;
+    }
+    .concept-badge {
+      display:inline-block;
+      background:var(--yellow); color:#080e1a;
+      font-family:var(--mono); font-size:0.7rem; font-weight:700;
+      padding:0.2rem 0.6rem; border-radius:var(--r-sm);
+      margin-bottom:1rem;
+      text-transform:uppercase; letter-spacing:0.06em;
+    }
+    .report-placeholder {
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--r);
+      padding:2rem;
+      text-align:center;
+      color:var(--muted2);
+      font-size:0.9rem;
+    }
+    .report-placeholder i { font-size:2rem; color:var(--border); margin-bottom:1rem; display:block; }
+
+    /* ---- STEPS (short version) ---- */
+    .steps { display:grid; grid-template-columns:1fr; gap:1.75rem; max-width:700px; list-style:none; }
+    @media (min-width:640px) { .steps { grid-template-columns:repeat(3,1fr); } }
+    .step { display:flex; gap:1.1rem; align-items:flex-start; }
+    .step-n {
+      font-family:var(--mono); font-size:0.7rem; color:var(--accent); letter-spacing:0.1em;
+      background:var(--accent-bg); border:1px solid rgba(12,192,223,0.2); border-radius:50%;
+      width:36px; height:36px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:0.1rem;
+    }
+    .step-b h3 { font-family:var(--mono); font-size:0.95rem; font-weight:700; margin-bottom:0.3rem; }
+    .step-b p { color:var(--muted2); font-size:0.875rem; }
+
+    /* ---- PRICING (simplified) ---- */
+    .free-banner {
+      display:flex; flex-direction:column; gap:1rem;
+      background:var(--green-bg); border:1px solid var(--green-bdr);
+      border-radius:var(--r); padding:1.25rem; margin-bottom:1.25rem; max-width:680px;
+    }
+    .free-banner strong { display:block; font-size:1rem; margin-bottom:0.2rem; }
+    .free-banner p { color:var(--muted2); font-size:0.85rem; }
+    .btn-free {
+      display:inline-flex; align-items:center; justify-content:center; gap:0.4rem;
+      background:rgba(74,222,128,0.15); border:1px solid var(--green-bdr);
+      color:var(--green); padding:0.65rem 1.25rem; border-radius:var(--r-sm);
+      font-weight:600; font-size:0.875rem; cursor:pointer; align-self:flex-start;
+    }
+    @media (min-width:480px) { .free-banner { flex-direction:row; align-items:center; justify-content:space-between; } .btn-free { align-self:center; } }
+
+    .plans-grid { display:grid; grid-template-columns:1fr; gap:1rem; max-width:680px; }
+    @media (min-width:480px) { .plans-grid { grid-template-columns:repeat(2,1fr); } }
+    .plan { background:var(--bg); border:1px solid var(--border); border-radius:var(--r); padding:1.5rem; display:flex; flex-direction:column; }
+    .plan.featured { border-color:var(--accent); position:relative; }
+    .plan-badge {
+      position:absolute; top:-1px; right:1.25rem;
+      background:var(--accent); color:#080e1a;
+      font-family:var(--mono); font-size:0.62rem; font-weight:700; padding:0.22rem 0.6rem; border-radius:0 0 var(--r-sm) var(--r-sm);
+    }
+    .plan-tier { font-family:var(--mono); font-size:0.7rem; letter-spacing:0.1em; color:var(--muted); text-transform:uppercase; margin-bottom:0.6rem; }
+    .plan-price { font-family:var(--mono); font-size:2.25rem; font-weight:700; letter-spacing:-0.04em; line-height:1; margin-bottom:0.2rem; }
+    .plan-price sup { font-size:1rem; vertical-align:super; }
+    .plan-price sub { font-size:0.875rem; color:var(--muted); font-weight:400; }
+    .plan-desc { color:var(--muted2); font-size:0.825rem; margin-bottom:1.25rem; }
+    .plan-feats { list-style:none; padding:0; margin-bottom:1.5rem; flex:1; }
+    .plan-feats li { display:flex; align-items:flex-start; gap:0.55rem; font-size:0.875rem; color:var(--muted2); padding:0.4rem 0; border-bottom:1px solid var(--border); }
+    .plan-feats li i { color:var(--accent); font-size:0.7rem; margin-top:0.3rem; }
+    .btn-plan { display:block; text-align:center; padding:0.75rem; border-radius:var(--r-sm); font-weight:600; font-size:0.9rem; cursor:pointer; border:1px solid transparent; }
+    .btn-outline { border-color:var(--border); color:var(--text); background:transparent; }
+    .btn-outline:hover { border-color:var(--accent); color:var(--accent); }
+    .btn-filled { background:var(--accent); color:#080e1a; }
+    .price-note { color:var(--muted); font-size:0.78rem; display:flex; align-items:center; gap:0.4rem; max-width:680px; }
+
+    /* ---- FOOTER ---- */
+    footer { border-top:1px solid var(--border); padding:2rem 1.25rem; }
+    .footer-inner { max-width:1100px; margin-inline:auto; display:flex; flex-direction:column; gap:1.25rem; }
+    .footer-logo { font-family:var(--mono); font-size:0.9rem; font-weight:700; display:flex; align-items:center; gap:0.4rem; }
+    .footer-links { display:flex; flex-wrap:wrap; gap:0.5rem 1.25rem; }
+    .footer-links a { color:var(--muted); font-size:0.825rem; transition:color 0.2s; }
+    .footer-links a:hover { color:var(--text); }
+    .footer-copy { color:var(--muted); font-size:0.78rem; }
+    @media (min-width:640px) { .footer-inner { flex-direction:row; align-items:center; justify-content:space-between; } }
+
+    /* ---- ANIMATIONS ---- */
+    @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+    .anim { opacity:0; animation:fadeUp 0.5s ease forwards; }
+    .d1{animation-delay:0.05s} .d2{animation-delay:0.12s} .d3{animation-delay:0.18s}
+    .d4{animation-delay:0.25s} .d5{animation-delay:0.32s} .d6{animation-delay:0.38s}
+  </style>
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar">
-    <div class="nav-container">
-        <a href="/" class="logo">
-            <i class="fas fa-lightbulb" style="color: #fbbf24; margin-right: 0.5rem;"></i>
-            CodeDecipher
-        </a>
-        <button class="hamburger" onclick="toggleMenu()">☰</button>
-        <div class="desktop-menu">
-            <a href="/analyze">Analyze</a>
-            <a href="/pricing">Pricing</a>
-            <a href="/login">Login</a>
-        </div>
-    </div>
-    <div class="mobile-menu" id="mobileMenu">
-        <a href="/analyze">Analyze</a>
-        <a href="/pricing">Pricing</a>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<!-- NAV -->
+<header role="banner">
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="/" class="logo">
+        <i class="fas fa-lightbulb"></i>
+        Code<span style="color:var(--accent)">Decipher</span>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-controls="nav-drawer" aria-expanded="false">
+        <i class="fas fa-bars" aria-hidden="true"></i>
+      </button>
+      <div class="nav-drawer" id="nav-drawer">
+        <a href="#how-it-works">How it works</a>
+        <a href="#pricing">Pricing</a>
         <a href="/login">Login</a>
+        <a href="/analyze" class="cta">Start free →</a>
+      </div>
     </div>
-</nav>
+  </nav>
+</header>
 
-<script>
-function toggleMenu() {
-    const menu = document.getElementById('mobileMenu');
-    menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-}
-</script>
+<main id="main-content">
 
-<!-- Hero Section -->
-<section style="padding: 3rem 1rem; text-align: center;">
+  <!-- HERO (your language) -->
+  <section class="hero">
     <div class="container">
-        <i class="fas fa-lightbulb" style="font-size: 3rem; color: #fbbf24; margin-bottom: 1.5rem;"></i>
-        
-        <h1 style="font-size: 2rem; margin-bottom: 1rem; line-height: 1.3;">
-            Understand any codebase<br>in minutes
-        </h1>
-        
-        <p style="color: #94a3b8; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
-            Paste any GitHub URL, code snippet, security scan, or API docs — Finally understand that codebase you inherited.
+      <div class="badge anim d1">
+        <i class="fas fa-circle" style="font-size:.35rem"></i>
+        No setup · No fluff · Just answers
+      </div>
+      <h1 id="hero-h" class="anim d2">
+        Understand <em>any codebase</em><br>in minutes — not days
+      </h1>
+      <p class="hero-sub anim d3">
+        Drop in a GitHub URL. Get a plain‑English report on the architecture, security holes, and API docs. No markdown soup. No "as an AI language model."
+      </p>
+      <p class="free-pill anim d4">
+        <i class="fas fa-gift"></i>
+        3 free analyses per month — no credit card, ever
+      </p>
+
+      <div class="hero-form anim d5">
+        <div class="input-wrap">
+          <label for="repo-url" class="sr-only">GitHub repository URL</label>
+          <input type="url" id="repo-url" class="hero-input" placeholder="https://github.com/username/repo">
+          <button class="btn-primary" onclick="submitRepo()">
+            <i class="fas fa-search"></i> Analyze repo
+          </button>
+        </div>
+        <p class="hero-reassure">
+          <i class="fas fa-lock"></i> Code deleted in 1 hour
+          <span class="sep">·</span> No account needed
+          <span class="sep">·</span> Public repos only
         </p>
-        
-        <div style="max-width: 500px; margin: 0 auto;">
-            <form action="/process-github" method="POST">
-                <input 
-                    type="url" 
-                    name="repo_url"
-                    placeholder="https://github.com/username/repository"
-                    style="width: 100%; padding: 1rem; margin-bottom: 0.75rem; background: #1e293b; border: 1px solid #334155; border-radius: 8px; color: white; font-size: 16px;"
-                    required
-                >
-                <button type="submit" style="width: 100%; padding: 1rem; background: #fbbf24; color: #0f172a; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer;">
-                    Analyze Repo
-                </button>
-            </form>
-        </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<script>
-function submitRepo() {
-    const url = document.getElementById('repo-url').value;
-    if (!url) {
-        alert('Please enter a GitHub URL');
-        return;
-    }
-    
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = '/process-github';
-    
-    const input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = 'repo_url';
-    input.value = url;
-    
-    form.appendChild(input);
-    document.body.appendChild(form);
-    form.submit();
-}
+  <!-- TRUST BAR -->
+  <div class="trust-bar">
+    <div class="trust-bar-inner">
+      <div class="trust-item"><i class="fas fa-bolt"></i><span>Results in under 60 seconds</span></div>
+      <div class="trust-item"><i class="fas fa-shield-alt"></i><span>Code auto‑deleted in 1 hour</span></div>
+      <div class="trust-item"><i class="fas fa-comment-alt"></i><span>Plain English — zero jargon</span></div>
+    </div>
+  </div>
 
-document.getElementById('repo-url')?.addEventListener('focus', function() {
-    setTimeout(() => {
-        this.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 300);
-});
-</script>
-
-<!-- Features Section -->
-<section style="padding: 3rem 1rem; background: #0f172a;">
+  <!-- REPORT PREVIEW (concept, honest) -->
+  <section class="section section-alt">
     <div class="container">
-        <h2 style="font-size: 1.75rem; text-align: center; margin-bottom: 2rem;">What Can You Decipher?</h2>
-        
-        <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem;">
-            
-            <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem;">
-                <i class="fab fa-github" style="font-size: 2rem; color: #0cc0df; margin-bottom: 1rem;"></i>
-                <h3 style="margin-bottom: 0.5rem;">GitHub Repositories</h3>
-                <p style="color: #94a3b8; font-size: 0.95rem;">Paste any public repo URL. Get a complete breakdown of architecture, tech stack, and complexity.</p>
-            </div>
-            
-            <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem;">
-                <i class="fas fa-shield-alt" style="font-size: 2rem; color: #0cc0df; margin-bottom: 1rem;"></i>
-                <h3 style="margin-bottom: 0.5rem;">Security Audits</h3>
-                <p style="color: #94a3b8; font-size: 0.95rem;">Scan code for vulnerabilities, hardcoded secrets, and insecure patterns.</p>
-            </div>
-            
-            <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem;">
-                <i class="fas fa-code" style="font-size: 2rem; color: #0cc0df; margin-bottom: 1rem;"></i>
-                <h3 style="margin-bottom: 0.5rem;">Code Snippets</h3>
-                <p style="color: #94a3b8; font-size: 0.95rem;">Paste any function or block. Understand what it does, how it works, and how to improve it.</p>
-            </div>
-            
-            <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem;">
-                <i class="fas fa-cloud" style="font-size: 2rem; color: #0cc0df; margin-bottom: 1rem;"></i>
-                <h3 style="margin-bottom: 0.5rem;">API Documentation</h3>
-                <p style="color: #94a3b8; font-size: 0.95rem;">Submit API docs or OpenAPI specs. Get a clear breakdown of endpoints, auth, and usage.</p>
-            </div>
-        </div>
-    </div>
-</section>
+      <p class="eyebrow">Example output (v2 concept)</p>
+      <h2 class="sec-title">This is what a report will look like</h2>
+      <p class="sec-sub">We're actively building toward this — your feedback helps shape it.</p>
 
-<!-- Pricing Section -->
-<section style="padding: 3rem 1rem; background: #0f172a; border-top: 1px solid #334155; border-bottom: 1px solid #334155;">
-    <div class="container">
-        <h2 style="font-size: 1.75rem; text-align: center; margin-bottom: 2rem;">Simple, Fair Pricing</h2>
-        
-        <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem; max-width: 800px; margin: 0 auto;">
-            
-            <div style="background: #1e293b; border: 1px solid #0cc0df; border-radius: 12px; padding: 2rem;">
-                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Pro</h3>
-                <div style="font-size: 2.5rem; color: white; margin-bottom: 0.5rem;">$29<span style="font-size: 1rem; color: #94a3b8;">/mo</span></div>
-                <p style="color: #94a3b8; margin-bottom: 1.5rem;">For solo developers and freelancers</p>
-                
-                <ul style="list-style: none; padding: 0; margin: 0 0 2rem 0;">
-                    <li style="margin-bottom: 0.75rem; display: flex; align-items: center;">
-                        <i class="fas fa-check" style="color: #0cc0df; margin-right: 0.75rem;"></i>
-                        <span>200 analyses per month</span>
-                    </li>
-                    <li style="margin-bottom: 0.75rem; display: flex; align-items: center;">
-                        <i class="fas fa-check" style="color: #0cc0df; margin-right: 0.75rem;"></i>
-                        <span>Full GitHub repo breakdowns</span>
-                    </li>
-                    <li style="margin-bottom: 0.75rem; display: flex; align-items: center;">
-                        <i class="fas fa-check" style="color: #0cc0df; margin-right: 0.75rem;"></i>
-                        <span>Security vulnerability scanning</span>
-                    </li>
-                    <li style="margin-bottom: 0.75rem; display: flex; align-items: center;">
-                        <i class="fas fa-check" style="color: #0cc0df; margin-right: 0.75rem;"></i>
-                        <span>Code snippet analysis</span>
-                    </li>
-                </ul>
-                
-                <a href="/pricing" style="display: block; text-align: center; background: #0cc0df; color: #0f172a; padding: 0.75rem; border-radius: 6px; font-weight: 600;">
-                    View Details
-                </a>
-            </div>
-            
-            <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 2rem;">
-                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Agency</h3>
-                <div style="font-size: 2.5rem; color: white; margin-bottom: 0.5rem;">$99<span style="font-size: 1rem; color: #94a3b8;">/mo</span></div>
-                <p style="color: #94a3b8; margin-bottom: 1.5rem;">For teams and agencies</p>
-                
-                <ul style="list-style: none; padding: 0; margin: 0 0 2rem 0;">
-                    <li style="margin-bottom: 0.75rem; display: flex; align-items: center;">
-                        <i class="fas fa-check" style="color: #0cc0df; margin-right: 0.75rem;"></i>
-                        <span>1,000 analyses per month</span>
-                    </li>
-                    <li style="margin-bottom: 0.75rem; display: flex; align-items: center;">
-                        <i class="fas fa-check" style="color: #0cc0df; margin-right: 0.75rem;"></i>
-                        <span>5 team seats included</span>
-                    </li>
-                    <li style="margin-bottom: 0.75rem; display: flex; align-items: center;">
-                        <i class="fas fa-check" style="color: #0cc0df; margin-right: 0.75rem;"></i>
-                        <span>Everything in Pro</span>
-                    </li>
-                    <li style="margin-bottom: 0.75rem; display: flex; align-items: center;">
-                        <i class="fas fa-check" style="color: #0cc0df; margin-right: 0.75rem;"></i>
-                        <span>Priority support</span>
-                    </li>
-                </ul>
-                
-                <a href="/pricing" style="display: block; text-align: center; background: #1e293b; color: white; padding: 0.75rem; border-radius: 6px; border: 1px solid #334155;">
-                    View Details
-                </a>
-            </div>
+      <div class="report-wrap">
+        <div class="report-bar">
+          <div class="report-bar-left">
+            <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+            <span class="report-label">Report preview</span>
+          </div>
         </div>
-        
-        <p style="text-align: center; color: #64748b; font-size: 0.85rem; margin-top: 2rem;">
-            <i class="fas fa-shield-alt" style="color: #0cc0df; margin-right: 0.25rem;"></i>
-            30-day refund guarantee • Cancel anytime • Secure payments
-        </p>
+        <div class="report-body">
+          <div class="concept-badge">Concept — final output may differ</div>
+          <div class="report-placeholder">
+            <i class="fas fa-file-code"></i>
+            <p>Your actual report will appear here.<br>We're refining the design based on early feedback.</p>
+          </div>
+        </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- Footer -->
-<footer style="background: #0f172a; padding: 3rem 1rem 2rem; border-top: 1px solid #334155;">
+  <!-- HOW IT WORKS (short) -->
+  <section class="section" id="how-it-works">
     <div class="container">
-        <div style="display: grid; grid-template-columns: 1fr; gap: 2rem; max-width: 1200px; margin: 0 auto;">
-            
-            <div>
-                <i class="fas fa-lightbulb" style="font-size: 2rem; color: #fbbf24; margin-bottom: 0.5rem;"></i>
-                <h3 style="color: white; margin-bottom: 1rem;">CodeDecipher</h3>
-                <p style="color: #94a3b8; margin-bottom: 1rem; max-width: 300px;">
-                    Understand any codebase in minutes. 
-                </p>
-            </div>
-            
-            <div>
-                <h4 style="color: white; margin-bottom: 1rem;">Product</h4>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="margin-bottom: 0.5rem;"><a href="/analyze" style="color: #94a3b8;">Analyzer</a></li>
-                    <li style="margin-bottom: 0.5rem;"><a href="/pricing" style="color: #94a3b8;">Pricing</a></li>
-                    <li style="margin-bottom: 0.5rem;"><a href="/security" style="color: #94a3b8;">Security Scanner</a></li>
-                    <li style="margin-bottom: 0.5rem;"><a href="/api" style="color: #94a3b8;">API Docs Analyzer</a></li>
-                </ul>
-            </div>
-            
-            <div>
-                <h4 style="color: white; margin-bottom: 1rem;">Support</h4>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="margin-bottom: 0.5rem;"><a href="/contact" style="color: #94a3b8;">Contact</a></li>
-                    <li style="margin-bottom: 0.5rem;"><a href="/faq" style="color: #94a3b8;">FAQ</a></li>
-                    <li style="margin-bottom: 0.5rem;"><a href="/privacy" style="color: #94a3b8;">Privacy Policy</a></li>
-                    <li style="margin-bottom: 0.5rem;"><a href="/terms" style="color: #94a3b8;">Terms of Service</a></li>
-                </ul>
-            </div>
-            
-            <div>
-                <h4 style="color: white; margin-bottom: 1rem;">Company</h4>
-                <ul style="list-style: none; padding: 0;">
-                    <li style="margin-bottom: 0.5rem;"><a href="/about" style="color: #94a3b8;">About</a></li>
-                    <li style="margin-bottom: 0.5rem;"><a href="/blog" style="color: #94a3b8;">Blog</a></li>
-                    <li style="margin-bottom: 0.5rem;"><a href="/careers" style="color: #94a3b8;">Careers</a></li>
-                </ul>
-            </div>
-        </div>
-        
-        <div style="border-top: 1px solid #334155; margin-top: 3rem; padding-top: 2rem; text-align: center; color: #64748b; font-size: 0.85rem;">
-            <p>&copy; 2025 CodeDecipher. All rights reserved.</p>
-        </div>
+      <p class="eyebrow">How it works</p>
+      <h2 class="sec-title">Three steps. Seriously.</h2>
+      <ol class="steps">
+        <li class="step"><span class="step-n">01</span><div class="step-b"><h3>Paste your repo</h3><p>GitHub URL, snippet, or OpenAPI spec.</p></div></li>
+        <li class="step"><span class="step-n">02</span><div class="step-b"><h3>Pick your report</h3><p>Analysis, security, or API docs.</p></div></li>
+        <li class="step"><span class="step-n">03</span><div class="step-b"><h3>Read plain English</h3><p>Clean, formatted, exportable.</p></div></li>
+      </ol>
     </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="section section-alt" id="pricing">
+    <div class="container">
+      <p class="eyebrow">Pricing</p>
+      <h2 class="sec-title">Simple. Fair. No tricks.</h2>
+      <div class="free-banner">
+        <div><strong><i class="fas fa-gift" style="color:var(--green)"></i> Free — always</strong><p>3 analyses/month · No credit card · No catch</p></div>
+        <a href="/analyze" class="btn-free">Start free <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="plans-grid">
+        <div class="plan">
+          <p class="plan-tier">Pro</p>
+          <div class="plan-price"><sup>$</sup>9<sub>.99/mo</sub></div>
+          <p class="plan-desc">For regular use</p>
+          <ul class="plan-feats"><li><i class="fas fa-check"></i> 50 analyses/month</li><li><i class="fas fa-check"></i> All report types</li><li><i class="fas fa-check"></i> Export to PDF</li></ul>
+          <a href="/pricing" class="btn-plan btn-outline">Get Pro</a>
+        </div>
+        <div class="plan featured">
+          <div class="plan-badge">Best value</div>
+          <p class="plan-tier">Pro Annual</p>
+          <div class="plan-price"><sup>$</sup>7<sub>.99/mo</sub></div>
+          <p class="plan-desc">Billed yearly</p>
+          <ul class="plan-feats"><li><i class="fas fa-check"></i> Unlimited analyses</li><li><i class="fas fa-check"></i> Shareable reports</li><li><i class="fas fa-check"></i> Priority support</li></ul>
+          <a href="/pricing" class="btn-plan btn-filled">Get Annual</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo"><i class="fas fa-lightbulb"></i> Code<span style="color:var(--accent)">Decipher</span></div>
+    <nav class="footer-links"><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/refunds">Refunds</a></nav>
+    <p class="footer-copy">© 2025 CodeDecipher</p>
+  </div>
 </footer>
+
+<script>
+  // Nav toggle
+  const toggle = document.getElementById('nav-toggle');
+  const drawer = document.getElementById('nav-drawer');
+  toggle.addEventListener('click', () => {
+    const open = drawer.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+  drawer.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      drawer.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Form submit
+  function submitRepo() {
+    const input = document.getElementById('repo-url');
+    const url = input.value.trim();
+    if (!url) { alert('Please enter a GitHub URL'); return; }
+    const form = document.createElement('form');
+    form.method = 'POST'; form.action = '/process-github';
+    const hidden = document.createElement('input');
+    hidden.type = 'hidden'; hidden.name = 'repo_url'; hidden.value = url;
+    form.appendChild(hidden); document.body.appendChild(form); form.submit();
+  }
+</script>
 
 </body>
 </html>
